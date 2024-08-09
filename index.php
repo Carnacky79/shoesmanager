@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <button class="btn btn-primary" type="submit">Cerca</button>
+                                        <button class="btn btn-primary" type="submit">Inserisci</button>
                                     </div>
                                 </form>
                             </div>
