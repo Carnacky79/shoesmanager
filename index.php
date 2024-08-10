@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>Dashboard - ShoesManager</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
     <div id="successMessage">Inserimento avvenuto con successo!</div>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-end">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.php">Start Bootstrap</a>
+            <a class="navbar-brand ps-3" href="index.php">Shoes Manager</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -63,7 +63,7 @@
                                 Dashboard
                             </a>
                             <div class="sb-sidenav-menu-heading">Gestione</div>
-                            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="anagrafica.php" >
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Anagrafica Clienti
                             </a>

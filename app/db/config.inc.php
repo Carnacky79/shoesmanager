@@ -1,12 +1,12 @@
 <?php
 if($_SERVER['SERVER_NAME'] == 'calzolaio.local.com'){
-    const DB_HOST = 'localhost';
-    const DB_NAME = 'calzolaio';
-    const DB_USER = 'root';
-    const DB_PASSWORD = 'password';
+    define("DB_HOST", 'localhost');
+    define("DB_NAME", 'calzolaio');
+    define("DB_USER", 'root');
+    define("DB_PASSWORD", 'password');
 }else{
-	const DB_HOST = 'sql.eggwebnapoli.it';
-    const DB_NAME = 'eggwebna45669';
-    const DB_USER = 'eggwebna45669';
-    const DB_PASSWORD = 'eggw28710';
+    define("DB_HOST", 'sql.eggwebnapoli.it');
+    define("DB_NAME", 'eggwebna45669');
+    define("DB_USER", 'eggwebna45669');
+    define("DB_PASSWORD", 'eggw28710');
 }

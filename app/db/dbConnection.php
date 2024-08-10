@@ -36,3 +36,30 @@
 
         return $status;
     }
+
+    function getClienti($conn) {
+        $sql = 'SELECT * FROM clienti';
+        return $conn->query($sql);
+    }
+
+    function updateClienti($conn, $id, $id_col, $value) {
+        switch($id_col) {
+            case 2:
+                $toChange = 'telefono';
+                $bind = 'si';
+                break;
+            case 1:
+                $toChange = 'alias';
+                $bind = 'si';
+                break;
+            default:
+                return false;
+        }
+
+        $sql = 'UPDATE clienti SET ' . $toChange . ' = ? WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param($bind, $value, $id);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
