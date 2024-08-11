@@ -11,7 +11,7 @@ if ($resInserimento) {
     $HTML = <<<HTML
     <div class="cliente">
         <h2>Cliente inserito con successo</h2>
-        <p>Codice Cliente: {$codice}</p>
+        <p>Codice Cliente: <span id="resCodCliente">{$codice}</span></p>
         <p>Telefono: {$numero}</p>
     </div>
 HTML;

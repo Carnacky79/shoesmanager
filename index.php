@@ -1,3 +1,8 @@
+<?php
+require_once 'app/bigliettino.php';
+
+global $biglietto;
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -58,7 +63,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Principale</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -152,7 +157,8 @@
                                         <div class="form-group mb-4 col-md-6">
                                             <label for="num_biglietto" class="mb-2">Bigliettino</label>
                                             <input class="form-control" id="num_biglietto" name="num_biglietto"
-                                                   type="text" placeholder="Inserisci il numero del bigliettino" />
+                                                   type="text" placeholder="Inserisci il numero del bigliettino"
+                                                   value="<?php echo  $biglietto; ?>" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -172,7 +178,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <button class="btn btn-primary" type="submit">Inserisci</button>
+                                        <button class="btn btn-primary" type="button" id="btnInserisciLavoro">Inserisci</button>
                                     </div>
                                 </form>
                             </div>

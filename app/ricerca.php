@@ -14,7 +14,7 @@ if ($cliente) {
     $HTML = <<<HTML
     <div class="cliente">
         <h2>Cliente Trovato</h2>
-        <p>Codice Cliente: {$cliente['cod_cliente']}</p>
+        <p>Codice Cliente: <span id="resCodCliente">{$cliente['cod_cliente']}</span></p>
         <p>Telefono: {$cliente['telefono']}</p>
     </div>
 HTML;

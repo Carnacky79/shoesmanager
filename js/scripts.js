@@ -44,8 +44,14 @@ window.addEventListener('DOMContentLoaded', event => {
                     // Popola il div con ID "risultato_ricerca" con il contenuto della risposta
                     document.getElementById('risultato_ricerca').innerHTML = xhr.responseText;
 
-                    // Aggiungi l'evento al pulsante "Inserisci"
-                    addEventToInserisci();
+                    var form = document.getElementById('inserisciCliente');
+                    if(form) {
+                        addEventToInserisci();
+                    }
+                    if(document.getElementById('resCodCliente')) {
+                        var cod_cliente = document.getElementById('resCodCliente').innerHTML;
+                        document.getElementById('num_cliente').value = cod_cliente;
+                    }
                 } else {
                     // Gestisci l'errore
                     console.error('Errore durante la richiesta AJAX: ' + xhr.status);
@@ -87,6 +93,8 @@ function addEventToInserisci() {
 
                     // Popola il div con ID "risultato_ricerca" con il contenuto della risposta
                     document.getElementById('risultato_ricerca').innerHTML = xhr.responseText;
+                    var cod_cliente = document.getElementById('resCodCliente').innerHTML;
+                    document.getElementById('num_cliente').value = cod_cliente;
                 } else {
                     // Gestisci l'errore
                     console.error('Errore durante la richiesta AJAX: ' + xhr.status);
@@ -98,3 +106,43 @@ function addEventToInserisci() {
         xhr.send(formData);
     });
 }
+
+
+        document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+            // Ottieni il form e i suoi dati
+            var form = document.getElementById('formLavoroIns');
+            var formData = new FormData(form);
+
+            // Crea un oggetto XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+
+            // Configura la richiesta
+            xhr.open('POST', 'app/inserisciLavoro.php', true);
+
+            // Definisci cosa fare quando la risposta è pronta
+            xhr.onreadystatechange = function () {
+                // Verifica se la richiesta è completata e la risposta è pronta
+                if (xhr.readyState === 4) {
+                    // Verifica se la richiesta ha avuto successo
+                    if (xhr.status === 200) {
+                        // Mostra il messaggio di successo
+                        var successMessage = document.getElementById('successMessage');
+                        successMessage.style.display = 'block';
+
+                        // Fai lampeggiare il messaggio
+                        setTimeout(function () {
+                            successMessage.style.display = 'none';
+                            window.location.href = "lavori.php";
+                        }, 3000); // Mostra il messaggio per 3 secondi
+
+                    } else {
+                        // Gestisci l'errore
+                        console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+                    }
+                }
+            };
+
+            // Invia la richiesta con i dati del form
+            xhr.send(formData);
+
+        });

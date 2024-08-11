@@ -63,3 +63,35 @@
         $prepared->close();
         return $status;
     }
+
+    // Gestione Lavori
+
+    function getLavoriNuovi($conn) {
+        $sql = 'SELECT * FROM lavori';
+        return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function getLavoriTerminati($conn) {
+        $sql = 'SELECT * FROM lavori WHERE stato = 1';
+        return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function inserisciLavoro($conn, $cliente_id, $num_bigliettino, $stato, $note) {
+        $now = getNowDate();
+        $sql = 'INSERT INTO lavori (data_inizio, cliente_id, num_bigliettino, stato_lavoro_id, note) VALUES ("'.$now.'", ?, ?, ?, ?)';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('iiis', $cliente_id, $num_bigliettino, $stato, $note);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+    function getNowDate() {
+        return date('Y-m-d');
+    }
+
+    function getLastBiglietto($conn) {
+        $sql = 'SELECT num_bigliettino FROM lavori WHERE data_fine IS NULL ORDER BY num_bigliettino DESC, data_inizio DESC LIMIT 1';
+        return $conn->query($sql)->fetch_assoc();
+    }
+
