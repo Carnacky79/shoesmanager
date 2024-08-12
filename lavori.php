@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Anagrafica Clienti - ShoesManager</title>
+    <title>Gestione Lavori - ShoesManager</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -93,35 +93,95 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Gestione Clienti</h1>
+                <h1 class="mt-4">Gestione Lavori</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Clienti</li>
+                    <li class="breadcrumb-item active">Gestione Lavori</li>
                 </ol>
 
                 <div class="row">
-                    <div class="col-md-8 offset-2">
+                    <div class="col-md-10 offset-1">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Anagrafica Clienti
+                                Lavori Aperti
                             </div>
                             <div class="card-body">
-                                <table id="dataTable" class="display">
+                                <table id="dataTable1" class="display">
                                     <thead>
                                     <tr>
-
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
+                                        <th></th>
+                                        <th>COD. CLIENTE</th>
+                                        <th>NUM BIGLIETTO</th>
+                                        <th>ATTRIBUTI</th>
                                         <th>TELEFONO</th>
+                                        <th>GIORNI TRASCORSI</th>
+                                        <th>STATO LAVORO</th>
+                                        <th>NOTE</th>
+                                        <th>DATA INIZIO</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
+                                        <th></th>
+                                        <th>COD. CLIENTE</th>
+                                        <th>NUM BIGLIETTO</th>
+                                        <th>ATTRIBUTI</th>
                                         <th>TELEFONO</th>
+                                        <th>GIORNI TRASCORSI</th>
+                                        <th>STATO LAVORO</th>
+                                        <th>NOTE</th>
+                                        <th>DATA INIZIO</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fa-solid fa-magnifying-glass me-1"></i>
+                                Lavori chiusi
+                            </div>
+                            <div class="card-body">
+                                <table id="dataTable2" class="display">
+                                    <thead>
+                                    <tr>
+                                        <th>COD. CLIENTE</th>
+                                        <th>NUM BIGLIETTO</th>
+                                        <th>DATA INIZIO</th>
+                                        <th>DATA FINE</th>
+                                        <th>SCAFFALE</th>
+                                        <th>RITIRATO</th>
+                                        <th>STATO LAVORO</th>
+                                        <th>NOTE</th>
+                                        <th>TELEFONO</th>
+                                        <th>DATA RITIRO</th>
+                                        <th>GIORNI TRASCORSI</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>COD. CLIENTE</th>
+                                        <th>NUM BIGLIETTO</th>
+                                        <th>DATA INIZIO</th>
+                                        <th>DATA FINE</th>
+                                        <th>SCAFFALE</th>
+                                        <th>RITIRATO</th>
+                                        <th>STATO LAVORO</th>
+                                        <th>NOTE</th>
+                                        <th>TELEFONO</th>
+                                        <th>DATA RITIRO</th>
+                                        <th>GIORNI TRASCORSI</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -152,7 +212,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
-<script src="js/anagrafica.js"></script>
+<script src="js/lavori.js"></script>
 </body>
 </html>
 

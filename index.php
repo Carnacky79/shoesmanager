@@ -73,7 +73,7 @@ global $biglietto;
                                 Anagrafica Clienti
                             </a>
 
-                            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <a class="nav-link" href="lavori.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-shoe-prints"></i></div>
                                 Lavori
                             </a>

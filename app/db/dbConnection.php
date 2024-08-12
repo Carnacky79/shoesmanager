@@ -66,13 +66,11 @@
 
     // Gestione Lavori
 
-    function getLavoriNuovi($conn) {
-        $sql = 'SELECT * FROM lavori';
-        return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
-    }
-
-    function getLavoriTerminati($conn) {
-        $sql = 'SELECT * FROM lavori WHERE stato = 1';
+    function getLavori($conn, $ended = false) {
+        $sql = 'SELECT l.scaffale, l.id, l.data_inizio, l.data_fine, l.note, l.num_bigliettino, l.ritirato, l.data_ritiro,
+c.cod_cliente, c.telefono, s.titolo, s.id, l.attributo_id, a.id, a.attributo, a.colore FROM lavori AS l
+JOIN clienti AS c on c.id = l.cliente_id JOIN statolavoro AS s ON s.id = l.stato_lavoro_id
+JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 'NOT ' : '') . 'NULL';
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -93,5 +91,9 @@
     function getLastBiglietto($conn) {
         $sql = 'SELECT num_bigliettino FROM lavori WHERE data_fine IS NULL ORDER BY num_bigliettino DESC, data_inizio DESC LIMIT 1';
         return $conn->query($sql)->fetch_assoc();
+    }
+
+    function getGiorniTrascorsi($data){
+        return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
     }
 
