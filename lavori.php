@@ -23,6 +23,13 @@
             border-radius: 5px;
             z-index: 9999;
         }
+
+        input[type="radio"].btn-check:checked + label {
+            border-color: black;
+            border-width: 4px;
+            border-style: dot-dot-dash;
+            border-radius: 10%;
+        }
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -100,7 +107,7 @@
                 </ol>
 
                 <div class="row">
-                    <div class="col-md-10 offset-1">
+                    <div class="col">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>

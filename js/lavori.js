@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', event => {
                     render: function(data, type, row) {
                     console.log(row['id']);
                     getAttributi(data, row['id']);
-                        return '<div id="attributo_id_'+ row['id'] +'"></div>';
+                        return '<div style="display:flex; flex-wrap: wrap" id="attributo_id_'+ row['id'] +'"></div>';
                     }
                 },
                 {data: 'telefono'},
@@ -42,6 +42,11 @@ window.addEventListener('DOMContentLoaded', event => {
                 name: 'data_inizio',
                 dir: 'desc'
             },
+            columnDefs: [
+                {target: 1, width: '10px'},
+                {target: 2, width: '10px'},
+                {target: 3, width: '300px'},
+            ],
             deferRender: true
         });
 
@@ -134,11 +139,16 @@ function renderAttributi(attributi, attr_id, row_id) {
             radio.value = attributo.id;
             radio.id = 'attributo_' + attributo.id + '_' + row_id;
             radio.className = 'btn-check';
+            if(attributo.id == attr_id) {
+                radio.checked = true;
+            }
+
             innerDIV.appendChild(radio);
             var label = document.createElement('label');
             label.htmlFor = 'attributo_' + attributo.id + '_' + row_id;
             label.className = 'btn btn-lavori';
-            label.style.color = attributo.colore;
+            label.style.backgroundColor = "#" + attributo.colore;
+            label.style.marginBottom = '5px';
             label.innerHTML = attributo.attributo;
             innerDIV.appendChild(label);
     });
