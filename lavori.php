@@ -30,6 +30,7 @@
             border-style: dot-dot-dash;
             border-radius: 10%;
         }
+
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -70,7 +71,7 @@
                         Dashboard
                     </a>
                     <div class="sb-sidenav-menu-heading">Gestione</div>
-                    <a class="nav-link" href="anagrafica.php" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                    <a class="nav-link" href="anagrafica.php">
                         <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                         Anagrafica Clienti
                     </a>

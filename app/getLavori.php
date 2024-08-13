@@ -3,7 +3,15 @@
 require_once 'db/dbConnection.php';
 global $conn;
 
-$ended = $_GET['ended'] == 'true' ? 1 : 0;
+
+$queries = array();
+parse_str($_SERVER['QUERY_STRING'], $queries);
+
+$ended = 0;
+if(isset($queries['ended'])) {
+    $ended = $queries['ended'] == 'true' ? 1 : 0;
+}
+
 
 $lavori = getLavori($conn, $ended);
 

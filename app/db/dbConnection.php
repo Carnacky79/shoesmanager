@@ -67,8 +67,8 @@
     // Gestione Lavori
 
     function getLavori($conn, $ended = false) {
-        $sql = 'SELECT l.scaffale, l.id, l.data_inizio, l.data_fine, l.note, l.num_bigliettino, l.ritirato, l.data_ritiro,
-c.cod_cliente, c.telefono, s.titolo, s.id, l.attributo_id, a.id, a.attributo, a.colore FROM lavori AS l
+        $sql = 'SELECT l.scaffale, l.id as lid, l.data_inizio, l.data_fine, l.note, l.num_bigliettino, l.ritirato, l.data_ritiro,
+c.cod_cliente, c.telefono, s.titolo, s.id as sid, l.attributo_id, a.id as aid, a.attributo, a.colore FROM lavori AS l
 JOIN clienti AS c on c.id = l.cliente_id JOIN statolavoro AS s ON s.id = l.stato_lavoro_id
 JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 'NOT ' : '') . 'NULL';
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
@@ -79,6 +79,68 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         $sql = 'INSERT INTO lavori (data_inizio, cliente_id, num_bigliettino, stato_lavoro_id, note) VALUES ("'.$now.'", ?, ?, ?, ?)';
         $prepared = $conn->prepare($sql);
         $prepared->bind_param('iiis', $cliente_id, $num_bigliettino, $stato, $note);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+    function updateLavoro($conn, $id, $id_col, $value) {
+        switch($id_col) {
+            case 2:
+                $toChange = 'num_bigliettino';
+                $bind = 'ii';
+                break;
+            case 6:
+                $statoLavoroId = getStatoLavoroId($conn, $value);
+                $value = $statoLavoroId;
+                $toChange = 'stato_lavoro_id';
+                $bind = 'ii';
+                break;
+            case 7:
+                $toChange = 'note';
+                $bind = 'si';
+                break;
+            default:
+                return false;
+        }
+
+        $sql = 'UPDATE lavori SET ' . $toChange . ' = ? WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param($bind, $value, $id);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+    function getStatoLavoroId($conn, $stato)
+    {
+        $statusId = null;
+        $sql = 'SELECT id FROM statolavoro WHERE UPPER(titolo) = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('s', strtoupper($stato));
+        $prepared->execute();
+        $prepared->bind_result($statusId);
+        $prepared->fetch();
+        $prepared->close();
+        return $stato;
+    }
+
+    function setLavoroEnd($conn, $id) {
+        $now = getNowDate();
+        $sql = 'UPDATE lavori SET data_fine = ? WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('si', $now, $id);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+
+    function updateAttributo($conn, $id, $attr_id) {
+        //var_dump($id, $attr_id);
+        $sql = 'UPDATE lavori SET attributo_id = ? WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('ii', $attr_id, $id);
         $status = $prepared->execute();
         $prepared->close();
         return $status;
