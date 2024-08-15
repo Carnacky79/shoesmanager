@@ -119,27 +119,27 @@
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>COD. CLIENTE</th>
-                                        <th>NUM BIGLIETTO</th>
+                                        <th>C.C</th>
+                                        <th>N.B</th>
                                         <th>ATTRIBUTI</th>
-                                        <th>TELEFONO</th>
-                                        <th>GIORNI TRASCORSI</th>
-                                        <th>STATO LAVORO</th>
+                                        <th>CELL</th>
+                                        <th>G.T</th>
+                                        <th>S.L</th>
                                         <th>NOTE</th>
-                                        <th>DATA INIZIO</th>
+                                        <th>DATA I.</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>COD. CLIENTE</th>
-                                        <th>NUM BIGLIETTO</th>
+                                        <th>C.C</th>
+                                        <th>N.B</th>
                                         <th>ATTRIBUTI</th>
-                                        <th>TELEFONO</th>
-                                        <th>GIORNI TRASCORSI</th>
-                                        <th>STATO LAVORO</th>
+                                        <th>CELL</th>
+                                        <th>G.T</th>
+                                        <th>S.L</th>
                                         <th>NOTE</th>
-                                        <th>DATA INIZIO</th>
+                                        <th>DATA I.</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>

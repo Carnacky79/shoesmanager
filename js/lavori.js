@@ -45,12 +45,14 @@ window.addEventListener('DOMContentLoaded', event => {
             columnDefs: [
                 {target: 1, width: '10px'},
                 {target: 2, width: '10px'},
-                {target: 3, width: '300px'},
-                {target: 4, width: '150px'},
-                {target: 5, width: '100px'},
+                {target: 3, width: '400px'},
+                {target: 4, width: '120px'},
+                {target: 5, width: '10px'},
+                {target: 6, width: '120px'},
                 {target: 8, width: '150px'},
             ],
-            deferRender: true
+            deferRender: true,
+            //autoWidth: true
         });
 
         let selectedTd = [];
@@ -235,6 +237,16 @@ function renderAttributi(attributi, attr_id, row_id) {
             label.className = 'btn btn-lavori';
             label.style.backgroundColor = "#" + attributo.colore;
             label.style.marginBottom = '5px';
+
+             // Impostazioni delle dimensioni a piacere
+            label.style.width = '25px';  // Imposta la larghezza della label
+            label.style.height = '25px';  // Imposta l'altezza della label
+            label.style.padding = '0px';  // Imposta il padding della label
+            label.style.fontSize = '10px';  // Imposta la dimensione del testo della label
+            label.style.fontWeight = 'bold';  // Imposta la dimensione del testo della label
+            label.style.lineHeight = '20px';  // Imposta l'altezza della riga per centrare verticalmente il testo
+
+
             label.innerHTML = attributo.attributo;
             innerDIV.appendChild(label);
     });

@@ -146,3 +146,61 @@ function addEventToInserisci() {
             xhr.send(formData);
 
         });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Funzione per la chiamata AJAX
+    function avviaRicerca() {
+        // Ottieni il form e i suoi dati
+        var form = document.getElementById('formRicerca');
+        var formData = new FormData(form);
+
+        // Crea un oggetto XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // Configura la richiesta
+        xhr.open('POST', 'app/ricerca.php', true);
+
+        // Definisci cosa fare quando la risposta è pronta
+        xhr.onreadystatechange = function() {
+            // Verifica se la richiesta è completata e la risposta è pronta
+            if (xhr.readyState === 4) {
+                // Verifica se la richiesta ha avuto successo
+                if (xhr.status === 200) {
+                    // Popola il div con ID "risultato_ricerca" con il contenuto della risposta
+                    document.getElementById('risultato_ricerca').innerHTML = xhr.responseText;
+
+                    var form = document.getElementById('inserisciCliente');
+                    if(form) {
+                        addEventToInserisci();
+                    }
+                    if(document.getElementById('resCodCliente')) {
+                        var cod_cliente = document.getElementById('resCodCliente').innerHTML;
+                        document.getElementById('num_cliente').value = cod_cliente;
+                    }
+                } else {
+                    // Gestisci l'errore
+                    console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+                }
+            }
+        };
+
+        // Invia la richiesta con i dati del form
+        xhr.send(formData);
+    }
+
+    // Aggiungi l'event listener per il click sul bottone
+    document.getElementById('btnRicerca').addEventListener('click', avviaRicerca);
+
+    // Seleziona tutti i campi di input all'interno del form
+    const inputs = document.querySelectorAll('#formRicerca input[type="text"]');
+
+    // Aggiungi un listener per l'evento keydown a ciascun input
+    inputs.forEach(function(input) {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Previeni il comportamento predefinito del tasto Enter
+                avviaRicerca(); // Chiama la funzione di ricerca
+            }
+        });
+    });
+});
