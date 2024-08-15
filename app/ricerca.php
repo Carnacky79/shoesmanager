@@ -12,7 +12,7 @@ $CodCliente = $ResCodCliente['cod_cliente'] + 1;
 
 if ($cliente) {
     $HTML = <<<HTML
-    <div class="cliente">
+    <div class="cliente cliente-trovato">
         <h2>Cliente Trovato</h2>
         <p>Codice Cliente: <span id="resCodCliente">{$cliente['cod_cliente']}</span></p>
         <p>Telefono: {$cliente['telefono']}</p>
@@ -22,7 +22,7 @@ HTML;
 } else {
     if($numero){
         $HTML = <<<HTML
-    <div class="cliente">
+    <div class="cliente cliente-non-trovato">
         <h2>Cliente non trovato</h2>
         <form id="inserisciCliente">
         

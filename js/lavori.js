@@ -294,10 +294,10 @@ function submitEdit(obj) {
             console.log('response', xhr.responseText);
             td.innerHTML = value;
             row.style.transition = "background-color 0.5s ease";
-            row.style.backgroundColor = "green";
+            //row.style.backgroundColor = "green";
 
             setTimeout(function() {
-                row.style.backgroundColor = "";
+                //row.style.backgroundColor = "";
             }, 500);
         }else{
             console.log('error', xhr.responseText);
