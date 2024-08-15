@@ -34,7 +34,10 @@ window.addEventListener('DOMContentLoaded', event => {
                 },
                 {data: 'telefono'},
                 {data: 'giorni_trascorsi'},
-                {data: 'titolo'},
+                {data: 'sid', render: function(data, type, row) {
+                        getStati(data, row['lid']);
+                    return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
+                },
                 {data: 'note'},
                 {data: 'data_inizio'},
             ],
@@ -85,7 +88,7 @@ window.addEventListener('DOMContentLoaded', event => {
         var cellData = cell.data();
         var cellIndex = cell.index();
         var rowIndex = row.index();
-        if((cellIndex.column == 2)||(cellIndex.column == 6) || (cellIndex.column == 7)) {
+        if((cellIndex.column == 2) || (cellIndex.column == 7)) {
             e.preventDefault();
 
     var cellElement = cell.node();
@@ -259,13 +262,14 @@ function getAttributi(attr, row_id) {
     };
     xhr.send();
 }
-function getAttributi(attr, row_id) {
+function getStati(stato, row_id) {
+    console.log('statiiiii', stato);
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'app/getAttributi.php', true);
+    xhr.open('GET', 'app/getStati.php', true);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            renderAttributi(response, attr, row_id);
+            renderStati(response, stato, row_id);
         }else{
             console.log('error', xhr.responseText);
         }
@@ -316,6 +320,62 @@ function renderAttributi(attributi, attr_id, row_id) {
     });
         addEventToRadio();
     }
+}
+
+function renderStati(stati, stato_id, row_id) {
+    var stat = stati.data;
+    console.log('statoIDSDELECTED', stato_id);
+    var max_id = Math.max(...stat.map(o => o.id))
+    var innerSelect = document.getElementById('stato_id_'+row_id);
+    var actualRow = innerSelect.parentElement.parentElement;
+    console.log('innerSelect', stati);
+    let optionValues = [...innerSelect.options].map(o => o.value)
+    if(optionValues.includes(max_id.toString())) {
+        return;
+    }else {
+
+        stat.forEach(function (stato) {
+
+            console.log('statoID', stato.id)
+            var option = document.createElement('option');
+            option.value = stato.id;
+            option.innerText = stato.titolo;
+            if (stato.id == stato_id) {
+                option.selected = 'selected';
+            }
+
+            innerSelect.appendChild(option);
+
+        });
+        addEventToDropdown();
+    }
+}
+
+function addEventToDropdown(){
+    var dropdown = document.querySelectorAll('select[id^=\'stato_id_\']');
+    dropdown.forEach(function(drop){
+        drop.addEventListener('change', function(){
+            //console.log('radio', radio);
+            var row_id = drop.id.split('_')[2];
+            var stato_id = drop.value;
+            var formData = new FormData();
+            formData.append('id', row_id);
+            formData.append('stato_id', stato_id);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'app/updateStato.php', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('response', xhr.responseText);
+
+                }else{
+                    console.log('error', xhr.responseText);
+
+                }
+            };
+            xhr.send(formData);
+        });
+    });
+
 }
 
 function setLavoroEnded(idLavoro, mtable1, mtable2, scaffale) {
