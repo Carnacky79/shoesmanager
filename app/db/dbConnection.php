@@ -125,11 +125,31 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         return $stato;
     }
 
-    function setLavoroEnd($conn, $id) {
+    function setLavoroEnd($conn, $id, $scaffale) {
         $now = getNowDate();
-        $sql = 'UPDATE lavori SET data_fine = ? WHERE id = ?';
+        $sql = 'UPDATE lavori SET attributo_id = 0, data_fine = ?, scaffale = ? WHERE id = ?';
         $prepared = $conn->prepare($sql);
-        $prepared->bind_param('si', $now, $id);
+        $prepared->bind_param('ssi', $now, $scaffale, $id);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+    function setLavoroReOpened($conn, $id){
+        $sql = 'UPDATE lavori SET data_fine = NULL, attributo_id = 0, scaffale = NULL WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('i', $id);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
+    }
+
+    function setLavoroRitirato($conn, $id, $ritirato){
+        $now = $ritirato == 'true' ? getNowDate() : NULL;
+        $rit = $ritirato == 'true' ? 1 : 0;
+        $sql = 'UPDATE lavori SET ritirato = ?, data_ritiro = ? WHERE id = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('isi', $rit, $now, $id);
         $status = $prepared->execute();
         $prepared->close();
         return $status;

@@ -59,7 +59,15 @@ window.addEventListener('DOMContentLoaded', event => {
 
         myTable.on('dblclick', 'tbody tr', function (e) {
             var lavoroId = myTable.row(this).data().lid;
-            setLavoroEnded(lavoroId, myTable, myTable2);
+            var confirm = window.confirm("Vuoi chiudere il lavoro?");
+            if(!confirm) {
+                return;
+            }
+            var scaffale = prompt("Inserisci lo scaffale", "");
+            if(scaffale == "") {
+                return;
+            }
+            setLavoroEnded(lavoroId, myTable, myTable2, scaffale);
 
             console.log('lavoroId', lavoroId);
 
@@ -107,12 +115,26 @@ window.addEventListener('DOMContentLoaded', event => {
             url: 'app/getLavori.php?ended=true',
         },
         columns: [
+            {data: 'lid',
+                visible: false},
             {data: 'cod_cliente'},
             {data: 'num_bigliettino'},
             {data: 'data_inizio'},
             {data: 'data_fine'},
             {data: 'scaffale'},
-            {data: 'ritirato'},
+            {
+                data: 'ritirato',
+                render: function (data, type, row) {
+                    console.log("cazzo" , data);
+                    if (row['ritirato'] == 1) {
+                        return '<div class="form-check form-switch d-flex flex-row justify-content-center">'+
+                            '<input onchange="setRitirato(this, '+row['lid']+')" type="checkbox" role="switch" class="form-check-input" checked="checked" id="switch_'+ row['lid'] +'"></div>';
+                    } else {
+                        return '<div class="form-check form-switch d-flex flex-row justify-content-center">'+
+                            '<input onchange="setRitirato(this, '+row['lid']+')" type="checkbox" role="switch" class="form-check-input" id="switch_'+ row['lid'] +'"></div>';
+                    }
+                }
+            },
             {data: 'titolo'},
             {data: 'note'},
             {data: 'telefono'},
@@ -125,6 +147,18 @@ window.addEventListener('DOMContentLoaded', event => {
             dir: 'desc'
         },
         deferRender: true
+    });
+
+    myTable2.on('dblclick', 'tbody tr', function (e) {
+        var lavoroId = myTable2.row(this).data().lid;
+        var confirm = window.confirm("Vuoi riaprire il lavoro?");
+        if(!confirm) {
+            return;
+        }
+        setLavoroReOpened(lavoroId, myTable, myTable2);
+
+        console.log('lavoroId', lavoroId);
+
     });
 
 
@@ -196,6 +230,22 @@ function addEventToRadio(){
 
 }
 
+function setRitirato(switc, id){
+    var formData = new FormData();
+    formData.append('id', id);
+    formData.append('ritirato', switc.checked);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'app/setRitirato.php', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('response', xhr.responseText);
+        }else{
+            console.log('error', xhr.responseText);
+        }
+    };
+    xhr.send(formData);
+}
+
 function getAttributi(attr, row_id) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'app/getAttributi.php', true);
@@ -209,6 +259,20 @@ function getAttributi(attr, row_id) {
     };
     xhr.send();
 }
+function getAttributi(attr, row_id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/getAttributi.php', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            renderAttributi(response, attr, row_id);
+        }else{
+            console.log('error', xhr.responseText);
+        }
+    };
+    xhr.send();
+}
+
 
 function renderAttributi(attributi, attr_id, row_id) {
     var attr = attributi.data;
@@ -254,11 +318,31 @@ function renderAttributi(attributi, attr_id, row_id) {
     }
 }
 
-function setLavoroEnded(idLavoro, mtable1, mtable2) {
+function setLavoroEnded(idLavoro, mtable1, mtable2, scaffale) {
+    var formData = new FormData();
+    formData.append('id', idLavoro);
+    formData.append('scaffale', scaffale);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'app/setLavoroEnd.php', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('response', xhr.responseText);
+            mtable1.ajax.reload();
+
+            mtable2.ajax.reload();
+        }else{
+            console.log('error', xhr.responseText);
+        }
+    };
+    xhr.send(formData);
+
+}
+
+function setLavoroReOpened(idLavoro, mtable1, mtable2) {
     var formData = new FormData();
     formData.append('id', idLavoro);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'app/setLavoroEnd.php', true);
+    xhr.open('POST', 'app/setLavoroReOpened.php', true);
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('response', xhr.responseText);

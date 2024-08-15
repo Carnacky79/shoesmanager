@@ -29,6 +29,7 @@
             border-width: 4px;
             border-style: dot-dot-dash;
             border-radius: 10%;
+            line-height: 15px !important;
         }
 
     </style>
@@ -164,6 +165,7 @@
                                 <table id="dataTable2" class="display">
                                     <thead>
                                     <tr>
+                                        <th></th>
                                         <th>COD. CLIENTE</th>
                                         <th>NUM BIGLIETTO</th>
                                         <th>DATA INIZIO</th>
@@ -179,6 +181,7 @@
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <th></th>
                                         <th>COD. CLIENTE</th>
                                         <th>NUM BIGLIETTO</th>
                                         <th>DATA INIZIO</th>

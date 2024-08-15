@@ -3,9 +3,9 @@ require_once 'db/dbConnection.php';
 global $conn;
 
 $id = $_POST['id'];
-$scaffale = $_POST['scaffale'];
+$ritirato = $_POST['ritirato'];
 
-$status = setLavoroEnd($conn, $id, $scaffale);
+$status = setLavoroRitirato($conn, $id, $ritirato);
 
 if($status !== 'error') {
     http_response_code(200);
