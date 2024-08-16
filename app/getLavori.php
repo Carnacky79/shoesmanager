@@ -15,10 +15,26 @@ if(isset($queries['ended'])) {
 
 $lavori = getLavori($conn, $ended);
 
-foreach ($lavori as $key => $lavoro) {
+/*foreach ($lavori as $key => $lavoro) {
     $lavori[$key]['giorni_trascorsi'] = 0;
     if ($lavoro['data_inizio'] != null) {
         $lavori[$key]['giorni_trascorsi'] = $ended ? getGiorniTrascorsi($lavoro['data_fine']) : getGiorniTrascorsi($lavoro['data_inizio']);
+    }
+}*/
+
+foreach ($lavori as $key => $lavoro) {
+    // Inizializza giorni_trascorsi a 0
+    $lavori[$key]['giorni_trascorsi'] = 0;
+
+    // Verifica se data_inizio è impostata
+    if ($lavoro['data_inizio'] != null) {
+        // Se data_fine è impostata e ritirato è 1, i giorni devono essere 0
+        if ($lavoro['data_fine'] != null && $lavoro['ritirato'] == 1) {
+            $lavori[$key]['giorni_trascorsi'] = 0;
+        } else {
+            // Calcola i giorni trascorsi normalmente
+            $lavori[$key]['giorni_trascorsi'] = $ended ? getGiorniTrascorsi($lavoro['data_fine']) : getGiorniTrascorsi($lavoro['data_inizio']);
+        }
     }
 }
 
