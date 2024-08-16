@@ -149,7 +149,10 @@ window.addEventListener('DOMContentLoaded', event => {
             name: 'data_inizio',
             dir: 'desc'
         },
-        deferRender: true
+        deferRender: true,
+        drawCallback: function() {
+            colorizeRows(); // Chiama la funzione di colorazione dopo che la tabella è stata disegnata
+        }
     });
 
     myTable2.on('dblclick', 'tbody tr', function (e) {
@@ -468,4 +471,59 @@ function hexToRgba(hex, opacity) {
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
+
+function colorizeRows() {
+    // Seleziona tutte le righe della tabella
+    const rows = $('#dataTable2 tbody tr').toArray();
+    console.log(`Numero di righe trovate: ${rows.length}`);
+
+    // Ottieni la data attuale
+    const currentDate = new Date();
+    console.log("Data attuale:", currentDate);
+
+    rows.forEach((row, index) => {
+        // Log dell'intera riga per il debug
+        console.log(`Riga ${index + 1} - Elemento row:`, row);
+
+        // Log dei dati e degli attributi della riga
+        const dataFineAttr = $(row).find('td').eq(4).text().trim(); // Supponendo che data_fine sia la quinta colonna (indice 4)
+        console.log(`Riga ${index + 1} - data-fine trovata: ${dataFineAttr}`);
+
+        // Procede solo se data_fine è popolata
+        if (dataFineAttr) {
+            const dataFine = new Date(dataFineAttr);
+            console.log(`Riga ${index + 1} - dataFine convertita: ${dataFine}`);
+
+            if (isNaN(dataFine)) {
+                console.error(`Riga ${index + 1} - Errore nella conversione della data: ${dataFineAttr}`);
+                return;
+            }
+
+            // Calcola la differenza in giorni tra la data attuale e data_fine
+            const timeDiff = dataFine - currentDate;
+            const giorniDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            console.log(`Riga ${index + 1} - Differenza in giorni: ${giorniDiff}`);
+
+            // Applica la classe CSS in base alla differenza di giorni
+            if (giorniDiff <= 20) {
+                $(row).addClass('bg-arancione');
+                console.log(`Riga ${index + 1} - Classe bg-arancione applicata`);
+            } else if (giorniDiff > 30) {
+                $(row).addClass('bg-rosso');
+                console.log(`Riga ${index + 1} - Classe bg-rosso applicata`);
+            } else {
+                console.log(`Riga ${index + 1} - Nessuna classe applicata`);
+            }
+        } else {
+            console.log(`Riga ${index + 1} - Nessun attributo data-fine trovato`);
+        }
+    });
+
+    console.log("Esecuzione di colorizeRows completata");
+}
+
+
+
+
+
 

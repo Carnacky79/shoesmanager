@@ -11250,3 +11250,11 @@ body {
 .cliente-non-trovato {
   color: red;
 }
+
+.bg-arancione {
+  background-color: orange;
+}
+
+.bg-rosso {
+  background-color: red;
+}
