@@ -11252,9 +11252,10 @@ body {
 }
 
 .bg-arancione {
-  background-color: orange;
+  background-color: rgba(255, 85, 0, 0.3) !important;
+
 }
 
 .bg-rosso {
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.4) !important;
 }
