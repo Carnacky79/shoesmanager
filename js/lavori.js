@@ -177,38 +177,43 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 
-    /*myTable.on('click', 'tbody td:not(:first-child)', function (e) {
-        e.preventDefault();
-        var cell = myTable.cell(this);
-        var row = myTable.row(this);
-        var data = row.data();
-        var col = myTable.column(this);
-        var colData = col.data();
-        var rowData = row.data();
-        var cellData = cell.data();
-        var cellIndex = cell.index();
-        var rowIndex = row.index();
+});
 
-            var cellElement = cell.node();
-            cellElement.innerHTML = '<input type="hidden" value="'+data.id+'" id="id_value"><input type="hidden" value="'+cellIndex.column+'" id="index_column"><input style="z-index:9999" type="text" value="' + cellData + '" autofocus /> <button class="btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('document - DOMContentLoaded - bubble'); // 2nd
+});
 
-            cellElement.querySelector('input[type="text"]').focus();
-            cellElement.querySelector('input[type="text"]').addEventListener("click", function (e) {
-                e.stopPropagation();
-            });
-
-            console.log('cell', cell);
-            console.log('row', row);
-            console.log('data', data);
-            console.log('col', col);
-            console.log('colData', colData);
-            console.log('rowData', rowData);
-            console.log('cellData', cellData);
-            console.log('cellIndex', cellIndex);
-            console.log('rowIndex', rowIndex);
-        });*/
+document.addEventListener('DOMContentLoaded', function() {
+    //popolamento div labels 1 e 2
+    var labels1 = document.getElementById('labels_1');
+    var divLabels1 = labels1.querySelectorAll('div');
+    divLabels1.forEach(function(div){
+        let idChiamante = div.getAttribute('id');
+        ajaxLabels1(idChiamante);
+    });
 
 });
+
+function ajaxLabels1(idChiamante) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/labels.php?id='+idChiamante, true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            renderLabel(response, idChiamante);
+        }else{
+            console.log('error', xhr.responseText);
+        }
+    };
+    xhr.send();
+}
+
+function renderLabel(labels, idChiamante) {
+    var labelData = labels.data;
+    var divLabels = document.getElementById('labels_1');
+    var div = divLabels.querySelector('div#'+idChiamante);
+    div.innerHTML = idChiamante + ' ' + labelData;
+}
 
 function addEventToRadio(){
     var radios = document.querySelectorAll('input[id^=\'attributo_\']');

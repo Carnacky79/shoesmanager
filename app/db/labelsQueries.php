@@ -5,21 +5,26 @@ global $conn;
 
 function CountLavoriTot($conn)
 {
-    $sql = 'SELECT COUNT(*) FROM Lavori WHERE DataFine IS NULL';
-    return $conn->query($sql);
+    $sql = 'SELECT COUNT(*) as totale FROM Lavori WHERE data_fine IS NULL';
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
 function CountLavoriSenzaAttributi($conn)
 {
-    $sql = 'SELECT COUNT(*) FROM Lavori WHERE DataFine IS NULL AND attributi = 0';
-    return $conn->query($sql);
+    $sql = 'SELECT COUNT(*) as totale FROM Lavori WHERE data_fine IS NULL AND attributo_id = 0';
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function CountLavoriAttributi($conn)
-{
-    $sql = 'SELECT COUNT(*) FROM Lavori WHERE DataFine IS NULL AND attributi = 0';
-    return $conn->query($sql);
+function CountLavoriAttributi($conn, $id_attributo){
+    $sql = 'SELECT COUNT(*) FROM Lavori WHERE data_fine IS NULL AND attributo_id = ?';
+    $prepared = $conn->prepare($sql);
+    $prepared->bind_param('i', $id_attributo);
+    $prepared->execute();
+    return $prepared->get_result();
 }
+
+
+
 
 
 

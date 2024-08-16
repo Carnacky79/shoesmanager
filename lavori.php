@@ -150,9 +150,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6"></div>
+                <div id="labels_1" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
+
+                    <div id="totali" style="width:15%; background-color: red; margin-left: 10px">
+
+                    </div>
+                    <div id="aperticonzero" style="width:15%; background-color: orange;">
+
+                    </div>
+                    <div id="chiusi" style="width:15%; background-color: yellow;">
+
+                    </div>
+                    <div id="differenzaac" style="width:15%; background-color: red">
+
+                    </div>
+                    <div id="ritirati" style="width:15%; background-color: yellow;">
+
+                    </div>
+                    <div id="differenzacr" style="width:15%; background-color: orange; margin-right:10px">
+
+                    </div>
+                </div>
+                <div id="labels_2" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
+
                 </div>
                 <div class="row">
                     <div class="col">

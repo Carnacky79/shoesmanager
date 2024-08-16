@@ -1,14 +1,16 @@
 <?php
 
 require_once 'db/labelsQueries.php';
+global $conn;
 
-$type = $_POST['type'];
+$type = $_GET['id'];
 
 switch($type){
-    case "aperticon":
-
+    case "totali":
+        $result = CountLavoriTot($conn)[0];
+        echo json_encode(['data' => $result['totale']], JSON_PRETTY_PRINT);
         break;
-    case "apertisenza":
-
+    default:
+        echo json_encode(['data' => 'HOLA'], JSON_PRETTY_PRINT);
         break;
 }
