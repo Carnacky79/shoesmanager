@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', event => {
             cellElement = cell.node();
             cellElement.innerHTML = '<input type="hidden" value="' + data.lid +
                 '" id="id_value"><input type="hidden" value="' + cellIndex.column +
-                '" id="index_column"><textarea style="z-index:9999" autofocus>' + cellData + '</textarea> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+                '" id="index_column"><textarea style="z-index:9999" autofocus onfocusin="autosize(this)">' + cellData + '</textarea> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
 
             cellElement.querySelector('textarea').focus();
             cellElement.querySelector('textarea').addEventListener("click", function (e) {
