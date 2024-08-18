@@ -162,16 +162,16 @@ global $biglietto;
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group mb-4 col-md-6">
-                                            <label for="stato_lavoro" class="mb-2">Stato Lavoro</label>
-                                            <select class="form-select" id="stato_lavoro" name="stato_lavoro">
-                                                <option selected value="0"></option>
-                                                <option value="1">In Attesa di Pagamento</option>
-                                                <option value="2">Pagata</option>
-                                                <option value="3">Spedita</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group mb-4 col-md-6">
+                                        <!-- <div class="form-group mb-4 col-md-6">
+                                             <label for="stato_lavoro" class="mb-2">Stato Lavoro</label>
+                                             <select class="form-select" id="stato_lavoro" name="stato_lavoro">
+                                                 <option selected value="0"></option>
+                                                 <option value="1">In Attesa di Pagamento</option>
+                                                 <option value="2">Pagata</option>
+                                                 <option value="3">Spedita</option>
+                                             </select>
+                                         </div>-->
+                                        <div class="form-group mb-4 col">
                                             <label for="note_ordine" class="mb-2">Note</label>
                                             <textarea class="form-control" id="note_ordine" name="note_ordine"
                                                       placeholder="Inserisci le note relative all'ordine"></textarea>
