@@ -115,12 +115,30 @@ global $attributi;
                                     Add Attributo
                                 </button>
                             </div>
-                            <div class="collapse" id="collapseExample">
-                                <div class="card card-body">
-                                    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-                                </div>
+                            <div class="collapse" id="collapseExample" style="border-bottom:1px red dotted">
+                                <form id="addAttributo">
+                                    <div class="card-body">
+                                        <div class="row py-2">
+                                            <div class="col-md-3">
+                                                <label for="attributo">Attributo</label>
+                                                <input type="text" class="form-control" id="attributo" name="attributo">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="colore">Colore</label>
+                                                <input type="color" class="form-control" id="colore" name="colore">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="descrizione">Descrizione</label>
+                                                <textarea class="form-control" id="descrizione" name="descrizione"></textarea>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-primary btn-sm" type="button" onclick="addAttr(this)">Aggiungi</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" id="attributiTable">
                                 <?php
                                 foreach ($attributi as $key => $value) {
                                     echo '<div class="row py-2">';
@@ -154,6 +172,7 @@ global $attributi;
                                     }
                                     echo '<div class="col-md-2">';
                                     echo '<button class="btn btn-primary btn-sm" type="button" onclick="updateAttr(this)">Aggiorna</button>';
+                                    echo '<button class="mx-1 btn btn-danger btn-sm" type="button" onclick="deleteAttr(this)" style="display: inline-block;"><i class="fa-solid fa-trash-can"></i></button>';
                                     echo '</div>';
                                     echo '</div>';
                                 }
