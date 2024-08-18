@@ -34,10 +34,10 @@ window.addEventListener('DOMContentLoaded', event => {
                 },
                 {data: 'telefono'},
                 {data: 'giorni_trascorsi'},
-                {data: 'sid', render: function(data, type, row) {
+                /*{data: 'sid', render: function(data, type, row) {
                         getStati(data, row['lid']);
                     return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
-                },
+                },*/
                 {data: 'note'},
                 {data: 'data_inizio'},
             ],
@@ -51,8 +51,8 @@ window.addEventListener('DOMContentLoaded', event => {
                 {target: 3, width: '400px'},
                 {target: 4, width: '120px'},
                 {target: 5, width: '10px'},
-                {target: 6, width: '120px'},
-                {target: 8, width: '150px'},
+
+                {target: 7, width: '150px'},
             ],
             deferRender: true,
             //autoWidth: true
@@ -138,7 +138,7 @@ window.addEventListener('DOMContentLoaded', event => {
                     }
                 }
             },
-            {data: 'titolo'},
+
             {data: 'note'},
             {data: 'telefono'},
             {data: 'data_ritiro'},

@@ -125,7 +125,6 @@
                                         <th>ATTRIBUTI</th>
                                         <th>CELL</th>
                                         <th>G.T</th>
-                                        <th>S.L</th>
                                         <th>NOTE</th>
                                         <th>DATA I.</th>
                                     </tr>
@@ -138,7 +137,6 @@
                                         <th>ATTRIBUTI</th>
                                         <th>CELL</th>
                                         <th>G.T</th>
-                                        <th>S.L</th>
                                         <th>NOTE</th>
                                         <th>DATA I.</th>
                                     </tr>
@@ -192,7 +190,6 @@
                                         <th>DATA FINE</th>
                                         <th>SCAFFALE</th>
                                         <th>RITIRATO</th>
-                                        <th>STATO LAVORO</th>
                                         <th>NOTE</th>
                                         <th>TELEFONO</th>
                                         <th>DATA RITIRO</th>
@@ -208,7 +205,6 @@
                                         <th>DATA FINE</th>
                                         <th>SCAFFALE</th>
                                         <th>RITIRATO</th>
-                                        <th>STATO LAVORO</th>
                                         <th>NOTE</th>
                                         <th>TELEFONO</th>
                                         <th>DATA RITIRO</th>
