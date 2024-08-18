@@ -1,3 +1,9 @@
+<?php
+require_once 'app/getAttributiforUpdate.php';
+
+global $attributi;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Anagrafica Clienti - ShoesManager</title>
+    <title>Configurazione Attributi - ShoesManager</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -96,7 +102,7 @@
                 <h1 class="mt-4">Gestione Clienti</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Clienti</li>
+                    <li class="breadcrumb-item active">Gestione Attributi</li>
                 </ol>
 
                 <div class="row">
@@ -104,29 +110,54 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Anagrafica Clienti
+                                Gestione Attributi -
+                                <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Add Attributo
+                                </button>
+                            </div>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                                </div>
                             </div>
                             <div class="card-body">
-                                <table id="dataTable" class="display">
-                                    <thead>
-                                    <tr>
+                                <?php
+                                foreach ($attributi as $key => $value) {
+                                    echo '<div class="row py-2">';
+                                    foreach ($value as $k => $v) {
+                                        if($k == 'id'){
+                                            echo '<input type="hidden" id="' . $k . '" name="' . $k . '" value="' . $v . '">';
+                                            continue;
+                                        }
 
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
-                                        <th>TELEFONO</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
+                                        if($k == 'colore'){
+                                            echo '<div class="col-md-3">';
+                                            //echo '<label for="' . $k . '">' . $k . '</label>';
+                                            echo '<input type="color" class="form-control" id="' . $k . '" name="' . $k . '" value="#' . $v . '">';
+                                            echo '</div>';
+                                            continue;
+                                        }
+                                        if($k == 'descrizione'){
+                                            echo '<div class="col-md-4">';
+                                            echo '<textarea class="form-control" id="' . $k . '" name="' . $k . '">' . $v . '</textarea>';
+                                            echo '</div>';
+                                            continue;
+                                        }
+                                        echo '<div class="col-md-3">';
+                                        echo '<div class="d-inline-flex align-items-center">';
+                                        echo '<label for="' . $k . '">' . $k . '</label>';
+                                        echo '<input type="text" class="form-control" id="' . $k . '" name="' . $k . '" value="' . $v . '">';
+                                        echo '</div>';
+                                        echo '</div>';
 
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
-                                        <th>TELEFONO</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+
+                                    }
+                                    echo '<div class="col-md-2">';
+                                    echo '<button class="btn btn-primary btn-sm" type="button" onclick="updateAttr(this)">Aggiorna</button>';
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -152,7 +183,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
-<script src="js/anagrafica.js"></script>
+<script src="js/attributi.js"></script>
 </body>
 </html>
 

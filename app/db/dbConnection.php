@@ -178,3 +178,4 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
     }
 
+

@@ -41,10 +41,9 @@ window.addEventListener('DOMContentLoaded', event => {
                 {data: 'note'},
                 {data: 'data_inizio'},
             ],
-            order: {
-                name: 'data_inizio',
-                dir: 'desc'
-            },
+            order: [
+                [7, 'asc'],
+            ],
             columnDefs: [
                 {target: 1, width: '10px'},
                 {target: 2, width: '10px'},
