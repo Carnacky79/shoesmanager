@@ -55,6 +55,14 @@ window.addEventListener('DOMContentLoaded', event => {
                 {target: 7, width: '150px'},
             ],
             deferRender: true,
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [100, 200, 250, 'All']
+            ],
+            layout: {
+                topStart: null
+            },
+            pageLength: 200
             //autoWidth: true
         });
 
@@ -88,11 +96,12 @@ window.addEventListener('DOMContentLoaded', event => {
         var cellData = cell.data();
         var cellIndex = cell.index();
         var rowIndex = row.index();
-        if((cellIndex.column == 2) || (cellIndex.column == 7)) {
+        var cellElement = null;
+        if((cellIndex.column == 2) ) {
             e.preventDefault();
 
-    var cellElement = cell.node();
-    cellElement.innerHTML = '<input type="hidden" value="' + data.lid + '" id="id_value"><input type="hidden" value="' + cellIndex.column + '" id="index_column"><input style="z-index:9999" type="text" value="' + cellData + '" autofocus /> <button class="btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+    cellElement = cell.node();
+    cellElement.innerHTML = '<input type="hidden" value="' + data.lid + '" id="id_value"><input type="hidden" value="' + cellIndex.column + '" id="index_column"><input style="width: 80%; z-index:9999" type="text" value="' + cellData + '" autofocus /> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
 
     cellElement.querySelector('input[type="text"]').focus();
     cellElement.querySelector('input[type="text"]').addEventListener("click", function (e) {
@@ -109,13 +118,27 @@ window.addEventListener('DOMContentLoaded', event => {
         console.log('cellData', cellData);
         console.log('cellIndex', cellIndex);
         console.log('rowIndex', rowIndex);
+        }else if((cellIndex.column == 6)){
+            e.preventDefault();
+
+            cellElement = cell.node();
+            cellElement.innerHTML = '<input type="hidden" value="' + data.lid +
+                '" id="id_value"><input type="hidden" value="' + cellIndex.column +
+                '" id="index_column"><textarea style="z-index:9999" autofocus>' + cellData + '</textarea> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+
+            cellElement.querySelector('textarea').focus();
+            cellElement.querySelector('textarea').addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
         }
     });
 
     const dataTableLavoriT = document.getElementById('dataTable2');
+    const ritiratiRadio = document.getElementsByName('ritirati');
+
     var myTable2 = new DataTable(dataTableLavoriT, {
         ajax: {
-            url: 'app/getLavori.php?ended=true',
+            url: 'app/getLavori.php?ended=true&display=all',
         },
         columns: [
             {data: 'lid',
@@ -158,10 +181,21 @@ window.addEventListener('DOMContentLoaded', event => {
             }else if(data['giorni_trascorsi'] >= 20 && data['giorni_trascorsi'] <= 30) {
                 $(row).addClass('bg-arancione');
             }
-        }
+        },
+        pageLength: 100
         /*drawCallback: function() {
             colorizeRows(); // Chiama la funzione di colorazione dopo che la tabella è stata disegnata
         }*/
+    });
+
+    ritiratiRadio.forEach(function(radio){
+        radio.addEventListener('change', function(){
+            if(radio.value == 'all') {
+                myTable2.ajax.url('app/getLavori.php?ended=true&display=all').load();
+            }else{
+                myTable2.ajax.url('app/getLavori.php?ended=true&display=non').load();
+            }
+        });
     });
 
     myTable2.on('dblclick', 'tbody tr', function (e) {
@@ -321,7 +355,8 @@ function renderAttributi(attributi, attr_id, row_id) {
             label.htmlFor = 'attributo_' + attributo.id + '_' + row_id;
             label.className = 'btn btn-lavori';
             label.style.backgroundColor = "#" + attributo.colore;
-            label.style.marginBottom = '5px';
+            label.style.marginBottom = '0';
+            label.style.marginTop = '2px';
 
              // Impostazioni delle dimensioni a piacere
             label.style.width = '25px';  // Imposta la larghezza della label
@@ -435,12 +470,22 @@ function setLavoroReOpened(idLavoro, mtable1, mtable2) {
 }
 
 function submitEdit(obj) {
-
+    var sib = obj.previousElementSibling;
     var row = obj.parentElement.parentElement;
     var cellElement = obj.parentElement;
-    var input = cellElement.querySelector('input[type="text"]');
+    var input = null;
+    var value = null;
+    if(sib.type == 'text') {
+         input = cellElement.querySelector('input[type="text"]');
+         value = input.value;
+        console.log("type tyext", value);
+    }else{
+         input = cellElement.querySelector('textarea');
+         value = input.value;
+        console.log("type textarea", value);
+    }
     var td = cellElement;
-    var value = input.value;
+
     var id = row.querySelector('#id_value').value;
     var index_column = row.querySelector('#index_column').value;
     console.log('td', td);

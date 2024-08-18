@@ -177,7 +177,12 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Lavori chiusi
+                                Lavori chiusi -
+                                <input type="radio" class="btn-check" name="ritirati" id="all" autocomplete="off" checked value="all">
+                                <label class="btn btn-outline-success" for="all">Tutti</label>
+
+                                <input type="radio" class="btn-check" name="ritirati" id="nonritirati" autocomplete="off" value="non">
+                                <label class="btn btn-outline-danger" for="nonritirati">Non Ritirati</label>
                             </div>
                             <div class="card-body">
                                 <table id="dataTable2" class="display">

@@ -11259,3 +11259,7 @@ body {
 .bg-rosso {
   background-color: rgba(255, 0, 0, 0.4) !important;
 }
+
+.customBtn {
+  padding: 0 5px;
+}
