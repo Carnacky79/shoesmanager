@@ -1,0 +1,4 @@
+AuthUserFile /web/htdocs/www.robiilcalzolaio.it/home/admin/.htpasswd
+AuthType Basic
+AuthName "Admin App"
+Require valid-user

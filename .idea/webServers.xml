@@ -2,8 +2,15 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="f3e8a5f8-9e1b-4c60-a1a7-d2027ca31ce4" name="eggweb" url="http://ftp.eggwebnapoli.it">
+      <webServer id="f3e8a5f8-9e1b-4c60-a1a7-d2027ca31ce4" name="eggweb (project level)" url="http://ftp.eggwebnapoli.it">
         <fileTransfer host="ftp.eggwebnapoli.it" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="13380fca-aa46-4c7d-8fad-7d4c39b900e9" name="robi_il_calzolaio" url="http://www.robiilcalzolaio.it/admin">
+        <fileTransfer rootFolder="/www.robiilcalzolaio.it/admin" host="ftp.robiilcalzolaio.it" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

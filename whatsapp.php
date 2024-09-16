@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Gestione Lavori - ShoesManager</title>
+    <title>Gestione Whatsapp - ShoesManager</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -66,10 +66,10 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Gestione Lavori</h1>
+                <h1 class="mt-4">Gestione Whatsapp</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Lavori</li>
+                    <li class="breadcrumb-item active">Gestione Whatsapp</li>
                 </ol>
 
                 <div class="row">
@@ -89,7 +89,6 @@
                                         <th>ATTRIBUTI</th>
                                         <th>CELL</th>
                                         <th>G.T</th>
-                                        <th>S.</th>
                                         <th>NOTE</th>
                                         <th>DATA I.</th>
                                     </tr>
@@ -102,7 +101,6 @@
                                         <th>ATTRIBUTI</th>
                                         <th>CELL</th>
                                         <th>G.T</th>
-                                        <th>S.</th>
                                         <th>NOTE</th>
                                         <th>DATA I.</th>
                                     </tr>
@@ -116,22 +114,22 @@
                 </div>
                 <div id="labels_1" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
 
-                    <div id="totali" style="width:15%; background-color: rgba(248,209,1,0.25) ; margin-left: 10px">
+                    <div id="totali" style="width:15%; background-color: red; margin-left: 10px">
 
                     </div>
-                    <div id="attesa" style="width:15%; background-color: rgba(255,114,0,0.25);">
+                    <div id="aperticonzero" style="width:15%; background-color: orange;">
 
                     </div>
-                    <div id="chiusi" style="width:15%; background-color: rgba(25,255,0,0.50);">
+                    <div id="chiusi" style="width:15%; background-color: yellow;">
 
                     </div>
-                    <div id="differenzaac" style="width:15%; background-color: rgba(255,41,41,0.30)">
+                    <div id="differenzaac" style="width:15%; background-color: red">
 
                     </div>
-                    <div id="ritirati" style="width:15%; background-color: rgba(0,159,147,0.45);">
+                    <div id="ritirati" style="width:15%; background-color: yellow;">
 
                     </div>
-                    <div id="differenzacr" style="width:15%; background-color: rgba(133,0,125,0.25); margin-right:10px">
+                    <div id="differenzacr" style="width:15%; background-color: orange; margin-right:10px">
 
                     </div>
                 </div>

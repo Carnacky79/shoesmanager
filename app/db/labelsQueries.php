@@ -9,18 +9,20 @@ function CountLavoriTot($conn)
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function CountLavoriSenzaAttributi($conn)
+function CountLavoriAttesaMateriale($conn)
 {
-    $sql = 'SELECT COUNT(*) as totale FROM lavori WHERE data_fine IS NULL AND attributo_id = 0';
+    $sql = 'SELECT COUNT(*) as totale FROM lavori WHERE data_fine IS NULL AND attributo_id = 3';
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function CountLavoriAttributi($conn, $id_attributo){
-    $sql = 'SELECT COUNT(*) FROM lavori WHERE data_fine IS NULL AND attributo_id = ?';
-    $prepared = $conn->prepare($sql);
-    $prepared->bind_param('i', $id_attributo);
-    $prepared->execute();
-    return $prepared->get_result();
+function CountLavoriChiusi($conn){
+    $sql = 'SELECT COUNT(*) as totale FROM lavori WHERE data_fine IS NOT NULL';
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function CountLavoriRitirati($conn){
+    $sql = 'SELECT COUNT(*) as totale FROM lavori WHERE data_fine IS NOT NULL AND ritirato = 1';
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
 

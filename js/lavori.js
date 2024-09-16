@@ -34,10 +34,10 @@ window.addEventListener('DOMContentLoaded', event => {
                 },
                 {data: 'telefono'},
                 {data: 'giorni_trascorsi'},
-                /*{data: 'sid', render: function(data, type, row) {
+                {data: 'sid', render: function(data, type, row) {
                         getStati(data, row['lid']);
                     return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
-                },*/
+                },
                 {data: 'note'},
                 {data: 'data_inizio'},
             ],
@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', event => {
                 {target: 4, width: '120px'},
                 {target: 5, width: '10px'},
 
-                {target: 7, width: '150px'},
+                {target: 8, width: '150px'},
             ],
             deferRender: true,
             lengthMenu: [
@@ -117,13 +117,13 @@ window.addEventListener('DOMContentLoaded', event => {
         console.log('cellData', cellData);
         console.log('cellIndex', cellIndex);
         console.log('rowIndex', rowIndex);
-        }else if((cellIndex.column == 6)){
+        }else if((cellIndex.column == 7)){
             e.preventDefault();
 
             cellElement = cell.node();
             cellElement.innerHTML = '<input type="hidden" value="' + data.lid +
                 '" id="id_value"><input type="hidden" value="' + cellIndex.column +
-                '" id="index_column"><textarea style="z-index:9999" autofocus onfocusin="autosize(this)">' + cellData + '</textarea> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+                '" id="index_column"><textarea style="z-index:9999; width:100%" autofocus onfocusout="submitEditFalse(this)" onfocusin="autosize(this)">' + cellData + '</textarea> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
 
             cellElement.querySelector('textarea').focus();
             cellElement.querySelector('textarea').addEventListener("click", function (e) {
@@ -233,6 +233,7 @@ function ajaxLabels1(idChiamante) {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
+            console.log('response labels', response);
             renderLabel(response, idChiamante);
         }else{
             console.log('error', xhr.responseText);
@@ -267,7 +268,7 @@ function addEventToRadio(){
                 if (xhr.status === 200) {
                     console.log('response', xhr.responseText);
                     actualRow.style.transition = "background-color 0.5s ease";
-                    actualRow.style.backgroundColor = hexToRgba(xhr.responseText, 20);
+                    actualRow.style.backgroundColor = hexToRgba(xhr.responseText, 40);
                 }else{
                     console.log('error', xhr.responseText);
                     actualRow.style.transition = "background-color 0.5s ease";
@@ -346,7 +347,7 @@ function renderAttributi(attributi, attr_id, row_id) {
             radio.className = 'btn-check';
             if(attributo.id == attr_id) {
                 radio.checked = true;
-                actualRow.style.backgroundColor = hexToRgba(attributo.colore, 20);
+                actualRow.style.backgroundColor = hexToRgba(attributo.colore, 40);
             }
 
             innerDIV.appendChild(radio);
@@ -468,53 +469,82 @@ function setLavoroReOpened(idLavoro, mtable1, mtable2) {
 
 }
 
-function submitEdit(obj) {
+function submitEditFalse(obj) {
     var sib = obj.previousElementSibling;
     var row = obj.parentElement.parentElement;
     var cellElement = obj.parentElement;
     var input = null;
     var value = null;
-    if(sib.type == 'text') {
-         input = cellElement.querySelector('input[type="text"]');
-         value = input.value;
+    if (sib.type == 'text') {
+        input = cellElement.querySelector('input[type="text"]');
+        value = input.value;
         console.log("type tyext", value);
-    }else{
-         input = cellElement.querySelector('textarea');
-         value = input.value;
+    } else {
+        input = cellElement.querySelector('textarea');
+        value = input.value;
         console.log("type textarea", value);
     }
     var td = cellElement;
 
-    var id = row.querySelector('#id_value').value;
-    var index_column = row.querySelector('#index_column').value;
-    console.log('td', td);
-    var formData = new FormData();
-    formData.append('id', id);
-    formData.append('index_column', index_column);
-    formData.append('value', value);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'app/updateLavoro.php', true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            console.log('response', xhr.responseText);
-            td.innerHTML = value;
-            row.style.transition = "background-color 0.5s ease";
-            //row.style.backgroundColor = "green";
+    setTimeout(function () {
+        td.innerHTML = value;
+    }, 2000);
 
-            setTimeout(function() {
-                //row.style.backgroundColor = "";
-            }, 500);
-        }else{
-            console.log('error', xhr.responseText);
-            row.style.transition = "background-color 0.5s ease";
-            row.style.backgroundColor = "red";
 
-            setTimeout(function() {
-                row.style.backgroundColor = "";
-            }, 500);
+
+}
+
+function submitEdit(obj, num=1) {
+
+
+        var sib = obj.previousElementSibling;
+        var row = obj.parentElement.parentElement;
+        var cellElement = obj.parentElement;
+        var input = null;
+        var value = null;
+        if (sib.type == 'text') {
+            input = cellElement.querySelector('input[type="text"]');
+            value = input.value;
+            console.log("type tyext", value);
+        } else {
+            input = cellElement.querySelector('textarea');
+            value = input.value;
+            console.log("type textarea", value);
         }
-    };
-    xhr.send(formData);
+        var td = cellElement;
+    if(num == 1) {
+
+        var id = row.querySelector('#id_value').value;
+        var index_column = row.querySelector('#index_column').value;
+        console.log('td', td);
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('index_column', index_column);
+        formData.append('value', value);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'app/updateLavoro.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log('response', xhr.responseText);
+                td.innerHTML = value;
+                row.style.transition = "background-color 0.5s ease";
+                //row.style.backgroundColor = "green";
+
+                setTimeout(function () {
+                    //row.style.backgroundColor = "";
+                }, 500);
+            } else {
+                console.log('error', xhr.responseText);
+                row.style.transition = "background-color 0.5s ease";
+                row.style.backgroundColor = "red";
+
+                setTimeout(function () {
+                    row.style.backgroundColor = "";
+                }, 500);
+            }
+        };
+        xhr.send(formData);
+    }
 
 }
 

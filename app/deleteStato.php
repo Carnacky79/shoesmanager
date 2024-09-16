@@ -5,7 +5,7 @@ global $conn;
 
 $id = $_POST['id'];
 
-$lavoriSql = 'SELECT count(*) as totaleLavori FROM lavori WHERE attributo_id = ?';
+$lavoriSql = 'SELECT count(*) as totaleLavori FROM lavori WHERE stato_lavoro_id = ?';
 $prepared = $conn->prepare($lavoriSql);
 $prepared->bind_param('i', $id);
 $prepared->execute();
@@ -15,8 +15,8 @@ $prepared->close();
 
 
 if($totaleLavori > 0) {
-    $setAttributoSql = 'UPDATE lavori SET attributo_id = 0 WHERE attributo_id = ?';
-    $prepared = $conn->prepare($setAttributoSql);
+    $setLavoroSql = 'UPDATE lavori SET stato_lavoro_id = 0 WHERE stato_lavoro_id = ?';
+    $prepared = $conn->prepare($setLavoroSql);
     $prepared->bind_param('i', $id);
     $status = $prepared->execute();
     $prepared->close();
@@ -30,7 +30,7 @@ if($totaleLavori > 0) {
 }
 
 
-$deleteSql = 'DELETE FROM attributi WHERE id = ?';
+$deleteSql = 'DELETE FROM statolavoro WHERE id = ?';
 $prepared = $conn->prepare($deleteSql);
 $prepared->bind_param('i', $id);
 $status = $prepared->execute();

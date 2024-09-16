@@ -1,3 +1,6 @@
+<?php
+require_once 'app/noteManager.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Anagrafica Clienti - ShoesManager</title>
+    <title>Blocco Note - ShoesManager</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     <style>
         /* Stile per il messaggio di successo */
         #successMessage {
@@ -22,6 +27,18 @@
             padding: 10px;
             border-radius: 5px;
             z-index: 9999;
+        }
+
+        input[type="radio"].btn-check:checked + label {
+            border-color: black;
+            border-width: 4px;
+            border-style: dot-dot-dash;
+            border-radius: 10%;
+            line-height: 15px !important;
+        }
+
+        trix-toolbar .trix-button-group--file-tools {
+            display: none !important;
         }
     </style>
 </head>
@@ -57,40 +74,28 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Gestione Clienti</h1>
+                <h1 class="mt-4">Blocco Note</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Clienti</li>
+                    <li class="breadcrumb-item active">Blocco Note</li>
                 </ol>
 
                 <div class="row">
-                    <div class="col-md-8 offset-2">
+                    <div class="col">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Anagrafica Clienti
+                                Blocco Note
                             </div>
                             <div class="card-body">
-                                <table id="dataTable" class="display">
-                                    <thead>
-                                    <tr>
+                                <form id="noteForm">
 
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
-                                        <th>TELEFONO</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-
-                                        <th>COD CLIENTE</th>
-                                        <th>ALIAS CLIENTE</th>
-                                        <th>TELEFONO</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                    <input type="hidden" id="trx" name="note">
+                                    <trix-editor input="trx"></trix-editor>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                                        <button id="saveNotes" type="submit" class="btn btn-primary">Salva</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -116,7 +121,9 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
-<script src="js/anagrafica.js"></script>
+<script src='js/autosize/autosize.js'></script>
+<script src="js/note.js"></script>
+
 </body>
 </html>
 

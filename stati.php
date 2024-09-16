@@ -1,7 +1,7 @@
 <?php
-require_once 'app/getAttributiforUpdate.php';
+require_once 'app/getStatiforUpdate.php';
 
-global $attributi;
+global $stati;
 
 ?>
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ global $attributi;
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Configurazione Attributi - ShoesManager</title>
+    <title>Configurazione Stati - ShoesManager</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -63,10 +63,10 @@ global $attributi;
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Gestione Attributi</h1>
+                <h1 class="mt-4">Gestione Stati</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Attributi</li>
+                    <li class="breadcrumb-item active">Gestione Stati</li>
                 </ol>
 
                 <div class="row">
@@ -74,37 +74,30 @@ global $attributi;
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Gestione Attributi -
+                                Gestione Stati -
                                 <button class="btn btn-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                    Add Attributo
+                                    Add Stato
                                 </button>
                             </div>
                             <div class="collapse" id="collapseExample" style="border-bottom:1px red dotted">
-                                <form id="addAttributo">
+                                <form id="addStato">
                                     <div class="card-body">
                                         <div class="row py-2">
-                                            <div class="col-md-3">
-                                                <label for="attributo">Attributo</label>
-                                                <input type="text" class="form-control" id="attributo" name="attributo">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="colore">Colore</label>
-                                                <input type="color" class="form-control" id="colore" name="colore">
-                                            </div>
+
                                             <div class="col-md-4">
-                                                <label for="descrizione">Descrizione</label>
-                                                <textarea class="form-control" id="descrizione" name="descrizione"></textarea>
+                                                <label for="titolo">Titolo</label>
+                                                <input type="text" class="form-control" id="titolo" name="titolo" />
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary btn-sm" type="button" onclick="addAttr(this)">Aggiungi</button>
+                                                <button class="btn btn-primary btn-sm" type="button" onclick="addStato(this)">Aggiungi</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div class="card-body" id="attributiTable">
+                            <div class="card-body offset-2" id="statiTable">
                                 <?php
-                                foreach ($attributi as $key => $value) {
+                                foreach ($stati as $key => $value) {
                                     echo '<div class="row py-2">';
                                     foreach ($value as $k => $v) {
                                         if($k == 'id'){
@@ -112,16 +105,9 @@ global $attributi;
                                             continue;
                                         }
 
-                                        if($k == 'colore'){
-                                            echo '<div class="col-md-3">';
-                                            //echo '<label for="' . $k . '">' . $k . '</label>';
-                                            echo '<input type="color" class="form-control" id="' . $k . '" name="' . $k . '" value="#' . $v . '">';
-                                            echo '</div>';
-                                            continue;
-                                        }
-                                        if($k == 'descrizione'){
+                                        if($k == 'titolo'){
                                             echo '<div class="col-md-4">';
-                                            echo '<textarea class="form-control" id="' . $k . '" name="' . $k . '">' . $v . '</textarea>';
+                                            echo '<input type="text" class="form-control" id="' . $k . '" name="' . $k . '" value="'.$v.'">';
                                             echo '</div>';
                                             continue;
                                         }
@@ -134,9 +120,9 @@ global $attributi;
 
 
                                     }
-                                    echo '<div class="col-md-2">';
-                                    echo '<button class="btn btn-primary btn-sm" type="button" onclick="updateAttr(this)">Aggiorna</button>';
-                                    echo '<button class="mx-1 btn btn-danger btn-sm" type="button" onclick="deleteAttr(this)" style="display: inline-block;"><i class="fa-solid fa-trash-can"></i></button>';
+                                    echo '<div class="col-md-4">';
+                                    echo '<button class="btn btn-primary btn-sm" type="button" onclick="updateStato(this)">Aggiorna</button>';
+                                    echo '<button class="mx-1 btn btn-danger btn-sm" type="button" onclick="deleteStato(this)" style="display: inline-block;"><i class="fa-solid fa-trash-can"></i></button>';
                                     echo '</div>';
                                     echo '</div>';
                                 }
@@ -166,7 +152,7 @@ global $attributi;
 <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
-<script src="js/attributi.js"></script>
+<script src="js/stati.js"></script>
 </body>
 </html>
 

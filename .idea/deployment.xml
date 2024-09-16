@@ -87,6 +87,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="robi_il_calzolaio">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="tania">
         <serverdata>
           <mappings>

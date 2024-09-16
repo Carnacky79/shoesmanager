@@ -89,13 +89,25 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         return $status;
     }
 
+function getClienteId($conn, $num_cliente) {
+        $id = null;
+        $sql = 'SELECT id FROM clienti WHERE cod_cliente = ?';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('d', $num_cliente);
+        $prepared->execute();
+        $prepared->bind_result($id);
+        $prepared->fetch();
+        $prepared->close();
+        return $id;
+    }
+
     function updateLavoro($conn, $id, $id_col, $value) {
         switch($id_col) {
             case 2:
                 $toChange = 'num_bigliettino';
                 $bind = 'ii';
                 break;
-            case 6:
+            case 7:
                 $toChange = 'note';
                 $bind = 'si';
                 break;
@@ -166,11 +178,11 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
     }
 
     function getNowDate() {
-        return date('Y-m-d');
+        return date('Y-m-d H:i:s');
     }
 
     function getLastBiglietto($conn) {
-        $sql = 'SELECT num_bigliettino FROM lavori WHERE data_fine IS NULL ORDER BY num_bigliettino DESC, data_inizio DESC LIMIT 1';
+        $sql = 'SELECT num_bigliettino FROM lavori ORDER BY id DESC LIMIT 1';
         return $conn->query($sql)->fetch_assoc();
     }
 
