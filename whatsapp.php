@@ -10,6 +10,8 @@
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     <style>
         /* Stile per il messaggio di successo */
         #successMessage {
@@ -36,7 +38,7 @@
 </head>
 <body class="sb-nav-fixed">
 <div id="successMessage"></div>
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-end">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-start">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.php">Shoes Manager</a>
     <!-- Sidebar Toggle-->
@@ -67,117 +69,39 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Gestione Whatsapp</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Whatsapp</li>
-                </ol>
+                <?php include 'includes/_navbar.php'; ?>
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Lavori Aperti
-                            </div>
-                            <div class="card-body">
-                                <table id="dataTable1" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="labels_1" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
-
-                    <div id="totali" style="width:15%; background-color: red; margin-left: 10px">
-
-                    </div>
-                    <div id="aperticonzero" style="width:15%; background-color: orange;">
-
-                    </div>
-                    <div id="chiusi" style="width:15%; background-color: yellow;">
-
-                    </div>
-                    <div id="differenzaac" style="width:15%; background-color: red">
-
-                    </div>
-                    <div id="ritirati" style="width:15%; background-color: yellow;">
-
-                    </div>
-                    <div id="differenzacr" style="width:15%; background-color: orange; margin-right:10px">
-
-                    </div>
-                </div>
-                <div id="labels_2" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
-
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Lavori chiusi -
-                                <input type="radio" class="btn-check" name="ritirati" id="all" autocomplete="off" checked value="all">
-                                <label class="btn btn-outline-success" for="all">Tutti</label>
-
-                                <input type="radio" class="btn-check" name="ritirati" id="nonritirati" autocomplete="off" value="non">
-                                <label class="btn btn-outline-danger" for="nonritirati">Non Ritirati</label>
+                                Whatsapp
                             </div>
                             <div class="card-body">
                                 <table id="dataTable2" class="display">
                                     <thead>
                                     <tr>
                                         <th></th>
-                                        <th>COD. CLIENTE</th>
-                                        <th>NUM BIGLIETTO</th>
-                                        <th>DATA INIZIO</th>
-                                        <th>DATA FINE</th>
-                                        <th>SCAFFALE</th>
-                                        <th>RITIRATO</th>
-                                        <th>NOTE</th>
-                                        <th>TELEFONO</th>
-                                        <th>DATA RITIRO</th>
-                                        <th>GIORNI TRASCORSI</th>
+                                        <th>C.C</th>
+                                        <th>N.B</th>
+                                        <th>CELL</th>
+                                        <th>G.T</th>
+                                        <th>S.L</th>
+                                        <th>D.F</th>
+                                        <th>D.I</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th></th>
-                                        <th>COD. CLIENTE</th>
-                                        <th>NUM BIGLIETTO</th>
-                                        <th>DATA INIZIO</th>
-                                        <th>DATA FINE</th>
-                                        <th>SCAFFALE</th>
-                                        <th>RITIRATO</th>
-                                        <th>NOTE</th>
-                                        <th>TELEFONO</th>
-                                        <th>DATA RITIRO</th>
-                                        <th>GIORNI TRASCORSI</th>
+                                        <th>C.C</th>
+                                        <th>N.B</th>
+                                        <th>CELL</th>
+                                        <th>G.T</th>
+                                        <th>S.L</th>
+                                        <th>D.F</th>
+                                        <th>D.I</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -185,6 +109,16 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-7">
+                        <form id="whatsForm">
+
+                            <input type="hidden" id="trx" name="whats">
+                            <trix-editor input="trx"></trix-editor>
+                            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                                <button id="saveWhats" type="submit" class="btn btn-primary">Salva</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -209,7 +143,7 @@
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
 <script src='js/autosize/autosize.js'></script>
-<script src="js/lavori.js"></script>
+<script src="js/whats.js"></script>
 
 </body>
 </html>

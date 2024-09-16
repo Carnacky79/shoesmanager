@@ -32,7 +32,7 @@ global $biglietto;
     </head>
     <body class="sb-nav-fixed">
     <div id="successMessage">Inserimento avvenuto con successo!</div>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-end">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-start">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">Shoes Manager</a>
             <!-- Sidebar Toggle-->
@@ -63,9 +63,7 @@ global $biglietto;
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Gestione Principale</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Home</li>
-                        </ol>
+<?php include 'includes/_navbar.php'; ?>
 
                         <div class="row">
                             <div class="col-xl-6">

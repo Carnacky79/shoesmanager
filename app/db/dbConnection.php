@@ -190,4 +190,18 @@ function getClienteId($conn, $num_cliente) {
         return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
     }
 
+function getWhats($conn, $display = 1) {
+        if($display == 1) {
+            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id where l.data_fine is NOT NULL';
+        } else {
+            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo, w.data_invio from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id join whatsapp as w on w.cliente_id = c.id where w.data_invio is NOT NULL';
+        }
+
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function insertWhatsapp(){
+
+}
+
 

@@ -33,7 +33,7 @@ global $attributi;
 </head>
 <body class="sb-nav-fixed">
 <div id="successMessage"></div>
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-end">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-start">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.php">Shoes Manager</a>
     <!-- Sidebar Toggle-->
@@ -64,10 +64,7 @@ global $attributi;
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Gestione Attributi</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.php">Principale</a></li>
-                    <li class="breadcrumb-item active">Gestione Attributi</li>
-                </ol>
+                <?php include 'includes/_navbar.php'; ?>
 
                 <div class="row">
                     <div class="col-md-8 offset-2">

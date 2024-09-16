@@ -181,6 +181,30 @@ window.addEventListener('DOMContentLoaded', event => {
                 $(row).addClass('bg-arancione');
             }
         },
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    let column = this;
+                    let title = column.header().textContent;
+                    if(title.toLowerCase() == 'num biglietto' || title.toLowerCase() == 'cod. cliente') {
+                    // Create input element
+                    let input = document.createElement('input');
+                    input.style.width = '50px';
+                    input.placeholder = title.toLowerCase();
+
+                        column.header().replaceChildren(input);
+
+
+                    // Event listener for user input
+                    input.addEventListener('keyup', () => {
+                        if (column.search() !== this.value) {
+                            column.search(input.value).draw();
+                        }
+                    });
+                    }
+                });
+        },
         pageLength: 100
         /*drawCallback: function() {
             colorizeRows(); // Chiama la funzione di colorazione dopo che la tabella è stata disegnata
@@ -558,6 +582,15 @@ function hexToRgba(hex, opacity) {
     var a = opacity / 100;
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+function toggleAperti(t){
+    var table = document.getElementById('lavoriApertiCB');
+    if(t.checked) {
+        table.style.display = 'block';
+    }else{
+        table.style.display = 'none';
+    }
 }
 
 

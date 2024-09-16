@@ -18,6 +18,11 @@
                     Lavori
                 </a>
 
+                <a class="nav-link" href="whatsapp.php">
+                    <div class="sb-nav-link-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    Whatsapp
+                </a>
+
                 <div class="sb-sidenav-menu-heading">Configurazione</div>
                 <a class="nav-link" href="attributi.php">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-gears"></i></div>
@@ -31,10 +36,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                     Note Ordini
                 </a>
-                <a class="nav-link" href="whatsapp.php">
-                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                    Messaggio Whatsapp
-                </a>
+
             </div>
         </div>
     </nav>
