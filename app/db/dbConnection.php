@@ -203,6 +203,51 @@ function getWhats($conn, $display = 1) {
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
+function duplicaLavoro($conn, $id_lavoro) {
+    // Step 1: Seleziona i dati del lavoro originale
+    $sql_select = "SELECT cliente_id, stato_lavoro_id, data_inizio, data_fine, note, num_bigliettino, ritirato, data_ritiro, attributo_id, scaffale FROM lavori WHERE id = ?";
+    $stmt_select = $conn->prepare($sql_select);
+    $stmt_select->bind_param('i', $id_lavoro);
+    $stmt_select->execute();
+    $result = $stmt_select->get_result();
+
+    if ($result->num_rows === 0) {
+        // Nessun lavoro trovato con quell'ID
+        return false;
+    }
+
+    // Recupera i dati del lavoro
+    $row = $result->fetch_assoc();
+    $stmt_select->close();
+
+    // Step 2: Inserisci i dati in un nuovo record, escludendo l'ID
+    $sql_insert = "INSERT INTO lavori (cliente_id, stato_lavoro_id, data_inizio, data_fine, note, num_bigliettino, ritirato, data_ritiro, attributo_id, scaffale) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt_insert = $conn->prepare($sql_insert);
+
+    // Associa i valori dalla riga originale, escluso l'ID
+    $stmt_insert->bind_param(
+        'iissssissi',
+        $row['cliente_id'],
+        $row['stato_lavoro_id'],
+        $row['data_inizio'],
+        $row['data_fine'],
+        $row['note'],
+        $row['num_bigliettino'],
+        $row['ritirato'],
+        $row['data_ritiro'],
+        $row['attributo_id'],
+        $row['scaffale']
+    );
+
+    // Esegui l'insert
+    $status = $stmt_insert->execute();
+    $stmt_insert->close();
+
+    return $status;
+}
+
+
 function insertWhatsapp(){
 
 }

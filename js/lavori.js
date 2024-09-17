@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', event => {
                 {data: 'data_inizio'},
             ],
             order: [
-                [7, 'asc'],
+                ['8', 'asc'],
             ],
             columnDefs: [
                 {target: 1, width: '10px'},
@@ -67,8 +67,52 @@ window.addEventListener('DOMContentLoaded', event => {
 
         let selectedTd = [];
 
+    myTable.on('click', 'tbody tr', (e) => {
+        let classList = e.currentTarget.classList;
+
+        if (classList.contains('selected')) {
+            classList.remove('selected');
+        }
+        else {
+            myTable.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
+            classList.add('selected');
+        }
+    });
+
+    document.querySelector('#btnDuplica').addEventListener('click', function () {
+        // Ottieni la riga selezionata
+        var selectedRowData = myTable.row('.selected').data();
+
+        var idlavoro = selectedRowData.lid;  // Supponendo che l'id sia nella prima colonna
+
+        console.log('lavoroId', idlavoro);
+
+        DuplicaLavoro(idlavoro);
+
+        myTable.ajax.reload();
+    });
+
+    function DuplicaLavoro(id){
+        var formData = new FormData();
+        formData.append('id', id);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'app/duplicaLavoro.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log('response', xhr.responseText);
+            }else{
+                console.log('error', xhr.responseText);
+            }
+        };
+        xhr.send(formData);
+    }
+
     myTable.on('dblclick', 'tbody tr textarea', function (e) {
+
     e.stopPropagation();
+
+        // Seleziona tutto il contenuto della textarea
+        $(this).select();
     });
 
         myTable.on('dblclick', 'tbody tr', function (e) {
@@ -296,7 +340,7 @@ function addEventToRadio(){
                 if (xhr.status === 200) {
                     console.log('response', xhr.responseText);
                     actualRow.style.transition = "background-color 0.5s ease";
-                    actualRow.style.backgroundColor = hexToRgba(xhr.responseText, 40);
+                    actualRow.style.backgroundColor = hexToRgba(xhr.responseText, 80);
                 }else{
                     console.log('error', xhr.responseText);
                     actualRow.style.transition = "background-color 0.5s ease";
@@ -375,7 +419,7 @@ function renderAttributi(attributi, attr_id, row_id) {
             radio.className = 'btn-check';
             if(attributo.id == attr_id) {
                 radio.checked = true;
-                actualRow.style.backgroundColor = hexToRgba(attributo.colore, 40);
+                actualRow.style.backgroundColor = hexToRgba(attributo.colore, 80);
             }
 
             innerDIV.appendChild(radio);
@@ -573,7 +617,6 @@ function submitEdit(obj, num=1) {
         };
         xhr.send(formData);
     }
-
 }
 
 //converte il colore da hex a rgba
