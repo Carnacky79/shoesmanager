@@ -4,8 +4,9 @@ global $conn;
 
 $numero = $_POST['telefono'];
 $codice = $_POST['cod_cliente'];
+$alias = $_POST['alias'];
 
-$resInserimento = inserisciCliente($conn, $numero, $codice);
+$resInserimento = inserisciCliente($conn, $numero, $codice, $alias);
 
 if ($resInserimento) {
     $HTML = <<<HTML
@@ -13,6 +14,7 @@ if ($resInserimento) {
         <h2>Cliente inserito con successo</h2>
         <p>Codice Cliente: <span id="resCodCliente">{$codice}</span></p>
         <p>Telefono: {$numero}</p>
+        <p>Alias: {$alias}</p>
     </div>
 HTML;
 } else {

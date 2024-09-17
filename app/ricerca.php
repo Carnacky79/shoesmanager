@@ -4,6 +4,7 @@ global $conn;
 
 $numero = $_POST['numero'] ?? null;
 $codice = $_POST['cod_cliente'] ?? null;
+$alias = $_POST['alias'] ?? null;
 
 $cliente = ricercaCliente($conn, $numero, $codice);
 
@@ -34,6 +35,10 @@ HTML;
 <div class="input-group mb-3">
   <span class="input-group-text" id="inputGroup-sizing-default" style="width:40%">Codice Cliente</span>
   <input type="text" class="form-control" name="cod_cliente" placeholder="Codice Cliente" value="{$CodCliente}">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="inputGroup-sizing-default" style="width:40%">Alias</span>
+  <input type="text" class="form-control" name="alias" placeholder="Cliente {$CodCliente}"  value="{$alias}">
 </div>
 <div class="form-group mb-4">
                                                 <button class="btn btn-primary" type="button" id="btnInserisci">Inserisci</button>

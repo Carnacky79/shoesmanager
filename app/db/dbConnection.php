@@ -25,9 +25,12 @@
         return $conn->query($sql)->fetch_assoc();
     }
 
-    function inserisciCliente($conn, $telefono, $cod_cliente) {
+    function inserisciCliente($conn, $telefono, $cod_cliente, $alias) {
         $sql = 'INSERT INTO clienti (telefono, cod_cliente, alias) VALUES (?, ?, ?)';
-        $alias = 'Cliente ' . $cod_cliente;
+
+        if (empty($alias)) {
+            $alias = 'Cliente ' . $cod_cliente;
+        }
 
         $prepared = $conn->prepare($sql);
         $prepared->bind_param('sis', $telefono, $cod_cliente, $alias);
@@ -192,7 +195,7 @@ function getClienteId($conn, $num_cliente) {
 
 function getWhats($conn, $display = 1) {
         if($display == 1) {
-            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id where l.data_fine is NOT NULL';
+            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id where l.data_fine is NOT NULL AND l.ritirato = 0';
         } else {
             $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo, w.data_invio from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id join whatsapp as w on w.cliente_id = c.id where w.data_invio is NOT NULL';
         }

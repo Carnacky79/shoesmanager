@@ -77,7 +77,7 @@ global $biglietto;
                                             <div class="form-group mb-4">
                                                 <label for="numero" class="mb-2">Ricerca per numero telefonico</label>
                                                 <input class="form-control" id="numero" name="numero"
-                                                       type="text" placeholder="Inserisci il numero di telefono" />
+                                                       type="text" placeholder="Inserisci il numero di telefono" autofocus />
                                             </div>
                                             <div class="form-group mb-4">
                                                 <label for="cod_cliente" class="mb-2">Ricerca per codice cliente</label>

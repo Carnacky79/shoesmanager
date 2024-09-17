@@ -12987,7 +12987,7 @@
         var tableId = settings.sTableId;
         var language = settings.oLanguage;
         var previousSearch = settings.oPreviousSearch;
-        var input = '<input type="search" class="'+classes.input+'"/>';
+        var input = '<input autofocus type="search" class="'+classes.input+'"/>';
 
         opts = $.extend({
             placeholder: language.sSearchPlaceholder,
