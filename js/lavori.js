@@ -67,6 +67,10 @@ window.addEventListener('DOMContentLoaded', event => {
 
         let selectedTd = [];
 
+    myTable.on('dblclick', 'tbody tr textarea', function (e) {
+    e.stopPropagation();
+    });
+
         myTable.on('dblclick', 'tbody tr', function (e) {
             var lavoroId = myTable.row(this).data().lid;
             var confirm = window.confirm("Vuoi chiudere il lavoro?");
