@@ -78,6 +78,9 @@
                                 <div class="form-check form-switch d-flex flex-row justify-content-start">
                                      <input onchange="toggleAperti(this)" type="checkbox" role="switch" class="form-check-input" checked="checked" id="aperti_toggle">
                                 </div>
+                                <div class="form-group mb-4 d-flex justify-content-end" >
+                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
+                                </div>
                             </div>
                             <div class="card-body" id="lavoriApertiCB">
                                 <table id="dataTable1" class="display">
