@@ -82,6 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
             {data: 'data_invio'},
         ],
         columnDefs: [
+            {target: 1, width: '10px'},
+            {target: 2, width: '10px'},
+            {target: 3, width: '50px'},
+            {target: 4, width: '10px'},
+            {target: 5, width: '50px'},
+            {target: 6, width: '200px'},
         ],
         order: {
             name: 'data_fine',
@@ -95,7 +101,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 $(row).addClass('bg-arancione');
             }
         },
+        pageLength: 50
 
     });
 
+    const ritiratiRadio = document.getElementsByName('ritirati');
+
+    ritiratiRadio.forEach(function(radio){
+        radio.addEventListener('change', function(){
+            if(radio.value == 'not') {
+                myTable2.ajax.url('app/getWhatsapp.php?display=not').load();
+            }else{
+                myTable2.ajax.url('app/getWhatsapp.php?display=all').load();
+            }
+        });
+    });
+
+    myTable2.on('click', 'tbody tr', (e) => {
+        var messaggio = document.getElementById('trx');
+        // Create a temporary DOM element
+        var tempElement = document.createElement('div');
+
+        // Assign HTML content to the element
+        tempElement.innerHTML = messaggio.value;
+
+        // Retrieve the text content from the element
+        var plainText = tempElement.textContent;
+        //console.log(plainText);
+        var data = myTable2.row(e.target.closest('tr')).data();
+        plainText = plainText.replace('CC:', 'CC: ' + data.cod_cliente);
+        console.log(plainText);
+
+
+        const myModal = new bootstrap.Modal('#staticBackdrop', {});
+        const inviato = myModal._element.querySelector('#inviato');
+        const messaggioModal = myModal._element.querySelector('#corpoModale');
+
+        messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
+
+        inviato.addEventListener('click', function(){
+            var formData = new FormData();
+            formData.append('id', data.id);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'app/whatsAddDB.php', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        myTable2.ajax.reload();
+                        myModal.hide();
+                    } else {
+                        console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send(formData);
+           myModal.hide();
+        });
+        myModal.show();
+    });
 });
