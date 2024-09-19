@@ -32,7 +32,10 @@ window.addEventListener('DOMContentLoaded', event => {
                         return '<div style="display:flex; flex-wrap: wrap" id="attributo_id_'+ row['lid'] +'"></div>';
                     }
                 },
-                {data: 'telefono'},
+                {data: 'telefono', render: function(data, type, row) {
+                        return data + '<a style="margin-left: 2px;" href="https://wa.me/39'+data+'" target="_blank"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></a>';
+                    }
+                },
                 {data: 'giorni_trascorsi'},
                 {data: 'sid', render: function(data, type, row) {
                         getStati(data, row['lid']);

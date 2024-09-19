@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    myTable2.on('click', 'tbody tr', (e) => {
+    myTable2.on('dblclick', 'tbody tr', (e) => {
         var messaggio = document.getElementById('trx');
         // Create a temporary DOM element
         var tempElement = document.createElement('div');
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         inviato.addEventListener('click', function(){
             var formData = new FormData();
-            formData.append('id', data.id);
+            formData.append('cod_cliente', data.cod_cliente);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'app/whatsAddDB.php', true);
             xhr.onreadystatechange = function () {
@@ -159,5 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
            myModal.hide();
         });
         myModal.show();
+
+        var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');
+        var whatsAppURl = 'https://wa.me/39' + data.telefono + '?text=' + messageEncoded;
+        window.open(whatsAppURl, '_blank').focus();
     });
 });
