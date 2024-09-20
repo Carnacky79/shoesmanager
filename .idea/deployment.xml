@@ -94,6 +94,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="robiilcalzolaio">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="shopify-app-2">
         <serverdata>
           <mappings>

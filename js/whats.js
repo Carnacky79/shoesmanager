@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {data: 'cod_cliente'},
             {data: 'num_bigliettino'},
             {data: 'telefono', render: function(data, type, row) {
-                    return data + '<button style="margin-left: 2px; border:none;" id="invioWhasapp" onclick="sendMessage(event, this)"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></button>';
+                    return data + '<button style="margin-left: 2px; border:none; background-color: transparent;" id="invioWhasapp" onclick="sendMessage(event, this)"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></button>';
                 }
             },
             {data: 'giorni_trascorsi'},
@@ -144,6 +144,7 @@ function sendMessage(e, myTable2){
     var codCliente = dataTd[0].innerText;
     plainText = plainText.replace('CC:', 'CC: ' + codCliente);
     console.log(plainText);
+    navigator.clipboard.writeText(plainText);
 
 
     const myModal = new bootstrap.Modal('#staticBackdrop', {});
@@ -169,14 +170,13 @@ function insertWhatsapp(btn){
     if(formData.has('cod_cliente')) {
         formData.delete('cod_cliente');
     }
-    formData.append('cod_cliente', data.cod_cliente);
+    formData.append('cod_cliente', codCliente);
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'app/whatsAddDB.php', true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 console.log(xhr.responseText);
-                myModal.hide();
             } else {
                 console.error('Errore durante la richiesta AJAX: ' + xhr.status);
             }
