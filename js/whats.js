@@ -75,7 +75,10 @@ document.addEventListener('DOMContentLoaded', function() {
             {data: 'id', visible: false},
             {data: 'cod_cliente'},
             {data: 'num_bigliettino'},
-            {data: 'telefono'},
+            {data: 'telefono', render: function(data, type, row) {
+                    return data + '<button style="margin-left: 2px; border:none;" id="invioWhasapp" onclick="sendMessage(event, this)"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></button>';
+                }
+            },
             {data: 'giorni_trascorsi'},
             {data: 'titolo'},
             {data: 'data_fine'},
@@ -84,9 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
         columnDefs: [
             {target: 1, width: '10px'},
             {target: 2, width: '10px'},
-            {target: 3, width: '50px'},
+
             {target: 4, width: '10px'},
-            {target: 5, width: '50px'},
+
+            {target: 6, width: '200px'},
             {target: 6, width: '200px'},
         ],
         order: {
@@ -117,51 +121,89 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    myTable2.on('dblclick', 'tbody tr', (e) => {
-        var messaggio = document.getElementById('trx');
-        // Create a temporary DOM element
-        var tempElement = document.createElement('div');
-
-        // Assign HTML content to the element
-        tempElement.innerHTML = messaggio.value;
-
-        // Retrieve the text content from the element
-        var plainText = tempElement.textContent;
-        //console.log(plainText);
-        var data = myTable2.row(e.target.closest('tr')).data();
-        plainText = plainText.replace('CC:', 'CC: ' + data.cod_cliente);
-        console.log(plainText);
-
-
-        const myModal = new bootstrap.Modal('#staticBackdrop', {});
-        const inviato = myModal._element.querySelector('#inviato');
-        const messaggioModal = myModal._element.querySelector('#corpoModale');
-
-        messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
-
-        inviato.addEventListener('click', function(){
-            var formData = new FormData();
-            formData.append('cod_cliente', data.cod_cliente);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'app/whatsAddDB.php', true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        console.log(xhr.responseText);
-                        myTable2.ajax.reload();
-                        myModal.hide();
-                    } else {
-                        console.error('Errore durante la richiesta AJAX: ' + xhr.status);
-                    }
-                }
-            };
-            xhr.send(formData);
-           myModal.hide();
-        });
-        myModal.show();
-
-        var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');
-        var whatsAppURl = 'https://wa.me/39' + data.telefono + '?text=' + messageEncoded;
-        window.open(whatsAppURl, '_blank').focus();
-    });
 });
+
+function sendMessage(e, myTable2){
+
+    var messaggio = document.getElementById('trx');
+    // Create a temporary DOM element
+    var tempElement = document.createElement('div');
+    tempElement.innerHTML = '';
+
+    // Assign HTML content to the element
+    tempElement.innerHTML = messaggio.value;
+
+    // Retrieve the text content from the element
+    var plainText = tempElement.textContent;
+    //console.log(plainText);
+    var data = null;
+    data = e.target.closest('tr');
+    dataTd = data.getElementsByTagName('td');
+
+    var number = dataTd[2].innerText;
+    var codCliente = dataTd[0].innerText;
+    plainText = plainText.replace('CC:', 'CC: ' + codCliente);
+    console.log(plainText);
+
+
+    const myModal = new bootstrap.Modal('#staticBackdrop', {});
+    const inviato = myModal._element.querySelector('#inviato');
+    const messaggioModal = myModal._element.querySelector('#corpoModale');
+
+    messaggioModal.innerHTML = '';
+    messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
+
+    inviato.setAttribute('data-cod-cliente', codCliente);
+
+    myModal.show();
+
+    var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');
+    var whatsAppURl = 'https://wa.me/39' + number + '?text=' + decodeEntities(messageEncoded);
+    window.open(whatsAppURl, '_blank').focus();
+}
+
+function insertWhatsapp(btn){
+    var formData = new FormData();
+    var codCliente = btn.getAttribute('data-cod-cliente');
+    console.log("cod_cliente: " + codCliente);
+    if(formData.has('cod_cliente')) {
+        formData.delete('cod_cliente');
+    }
+    formData.append('cod_cliente', data.cod_cliente);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'app/whatsAddDB.php', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+                myModal.hide();
+            } else {
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+    xhr.send(formData);
+
+    var table = $('#dataTable2').DataTable();
+    table.ajax.reload();
+}
+
+var decodeEntities = (function() {
+    // this prevents any overhead from creating the object each time
+    var element = document.createElement('div');
+
+    function decodeHTMLEntities (str) {
+        if(str && typeof str === 'string') {
+            // strip script/html tags
+            str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+            str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+            element.innerHTML = str;
+            str = element.textContent;
+            element.textContent = '';
+        }
+
+        return str;
+    }
+
+    return decodeHTMLEntities;
+})();

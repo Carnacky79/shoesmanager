@@ -154,7 +154,7 @@
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-                    <button type="button" class="btn btn-primary" id="inviato">Inviato!!!</button>
+                    <button onclick="insertWhatsapp(this)" type="button" class="btn btn-primary" id="inviato" data-bs-dismiss="modal">Inviato!!!</button>
                 </div>
             </div>
         </div>
