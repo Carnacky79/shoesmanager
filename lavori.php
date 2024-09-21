@@ -213,6 +213,7 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-2.1.2/b-3.1.0/sl-2.0.3/datatables.min.js"></script>
+<script src="js/luxon.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
 <script src='js/autosize/autosize.js'></script>
 <script src="js/lavori.js"></script>

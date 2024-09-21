@@ -91,7 +91,15 @@ document.addEventListener('DOMContentLoaded', function() {
             {target: 4, width: '10px'},
 
             {target: 6, width: '200px'},
-            {target: 6, width: '200px'},
+            {target: 7, width: '200px'},
+            {
+                targets: [6,7],
+                render: function (data, type, row) {
+                    var dataFormatted = new Date(data).toLocaleDateString();
+                    var ora = new Date(data).toLocaleTimeString();
+                    return dataFormatted + ' - ' + ora;
+                }
+            }
         ],
         order: {
             name: 'data_fine',

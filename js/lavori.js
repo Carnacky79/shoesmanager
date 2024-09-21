@@ -54,7 +54,15 @@ window.addEventListener('DOMContentLoaded', event => {
                 {target: 4, width: '120px'},
                 {target: 5, width: '10px'},
 
-                {target: 8, width: '150px'},
+                {target: 8, width: '250px'},
+                {
+                    targets: 8,
+                    render: function (data, type, row) {
+                        var dataFormatted = new Date(data).toLocaleDateString();
+                        var ora = new Date(data).toLocaleTimeString();
+                        return dataFormatted + ' - ' + ora;
+                    }
+                }
             ],
             deferRender: true,
             lengthMenu: [
@@ -64,6 +72,30 @@ window.addEventListener('DOMContentLoaded', event => {
             layout: {
                 topStart: null
             },
+            /*initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.header().textContent;
+                        if(title.toLowerCase() == 'attributi') {
+                            // Create input element
+                            let input = document.createElement('input');
+                            input.style.width = '100px';
+                            input.placeholder = title.toLowerCase();
+
+                            column.header().replaceChildren(input);
+
+
+                            // Event listener for user input
+                            input.addEventListener('keyup', () => {
+                                if (column.search() !== this.value) {
+                                    column.search(input.value).draw();
+                                }
+                            });
+                        }
+                    });
+            },*/
             pageLength: 200
             //autoWidth: true
         });
@@ -218,7 +250,16 @@ window.addEventListener('DOMContentLoaded', event => {
             {data: 'giorni_trascorsi'},
 
         ],
-        columnDefs: [],
+        columnDefs: [
+            {
+                targets: [3,4,9],
+                render: function (data, type, row) {
+                    var dataFormatted = new Date(data).toLocaleDateString();
+                    var ora = new Date(data).toLocaleTimeString();
+                    return dataFormatted + ' - ' + ora;
+                }
+            }
+        ],
         order: {
             name: 'data_inizio',
             dir: 'desc'
