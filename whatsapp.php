@@ -78,7 +78,7 @@
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
                                 Whatsapp -
                                 <input type="radio" class="btn-check" name="ritirati" id="not" autocomplete="off" checked value="not">
-                                <label class="btn btn-outline-success" for="not">Non ritirati</label>
+                                <label class="btn btn-outline-success" for="not">Non Inviati</label>
 
                                 <input type="radio" class="btn-check" name="ritirati" id="tutti" autocomplete="off" value="all">
                                 <label class="btn btn-outline-danger" for="tutti">Tutti</label>
