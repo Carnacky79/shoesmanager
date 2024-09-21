@@ -195,9 +195,11 @@ function getClienteId($conn, $num_cliente) {
 
 function getWhats($conn, $display = 1) {
         if($display == 1) {
-            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id where l.data_fine is NOT NULL AND l.ritirato = 0';
+            //$sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id where l.data_fine is NOT NULL AND l.ritirato = 0';
+            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo FROM clienti AS c JOIN lavori AS l ON c.id = l.cliente_id JOIN statolavoro AS s ON l.stato_lavoro_id = s.id LEFT JOIN whatsapp AS w ON w.id_lavoro = l.id WHERE l.data_fine IS NOT NULL AND l.ritirato = 0  AND (w.data_invio IS NULL OR w.id_lavoro IS NULL)';
         } else {
-            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo, w.data_invio from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id join whatsapp as w on w.cliente_id = c.id where w.data_invio is NOT NULL';
+            //$sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo, w.data_invio from clienti as c join lavori as l on c.id = l.cliente_id join statolavoro as s on l.stato_lavoro_id = s.id join whatsapp as w on w.cliente_id = c.id where w.data_invio is NOT NULL';
+            $sql = 'SELECT l.id, c.cod_cliente, l.num_bigliettino, c.telefono, l.data_fine, s.titolo, w.data_invio FROM clienti AS c JOIN lavori AS l ON c.id = l.cliente_id JOIN statolavoro AS s ON l.stato_lavoro_id = s.id JOIN whatsapp AS w ON w.id_lavoro = l.id WHERE w.data_invio IS NOT NULL';
         }
 
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);

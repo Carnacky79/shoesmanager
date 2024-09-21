@@ -140,6 +140,8 @@ function sendMessage(e, myTable2){
     data = e.target.closest('tr');
     dataTd = data.getElementsByTagName('td');
 
+    console.log("data: " + dataTd);
+
     var number = dataTd[2].innerText;
     var codCliente = dataTd[0].innerText;
     plainText = plainText.replace('CC:', 'CC: ' + codCliente);
@@ -155,6 +157,7 @@ function sendMessage(e, myTable2){
     messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
 
     inviato.setAttribute('data-cod-cliente', codCliente);
+    inviato.setAttribute('id',id);
 
     myModal.show();
 
@@ -163,7 +166,7 @@ function sendMessage(e, myTable2){
     window.open(whatsAppURl, '_blank').focus();
 }
 
-function insertWhatsapp(btn){
+/*function insertWhatsapp(btn){
     var formData = new FormData();
     var codCliente = btn.getAttribute('data-cod-cliente');
     console.log("cod_cliente: " + codCliente);
@@ -184,6 +187,48 @@ function insertWhatsapp(btn){
     };
     xhr.send(formData);
 
+    var table = $('#dataTable2').DataTable();
+    table.ajax.reload();
+}*/
+
+function insertWhatsapp(btn) {
+    var formData = new FormData();
+
+    console.log(formData);
+    // Recupera 'cod_cliente' dal bottone
+    var codCliente = btn.getAttribute('data-cod-cliente');
+    console.log("cod_cliente: " + codCliente);
+
+    // Recupera 'id_lavoro' dal bottone
+    var idLavoro = btn.getAttribute('data-id');
+    console.log("id: " + idlavoro);
+
+    // Aggiungi 'cod_cliente' e 'id_lavoro' ai dati da inviare
+    if (formData.has('cod_cliente')) {
+        formData.delete('cod_cliente');
+    }
+    formData.append('cod_cliente', codCliente);
+
+    if (formData.has('id')) {
+        formData.delete('id');
+    }
+    formData.append('id', idLavoro);
+
+    // Invia la richiesta AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'app/whatsAddDB.php', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+            } else {
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+    xhr.send(formData);
+
+    // Ricarica la tabella dopo l'inserimento
     var table = $('#dataTable2').DataTable();
     table.ajax.reload();
 }
