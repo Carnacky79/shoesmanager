@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {data: 'cod_cliente'},
             {data: 'num_bigliettino'},
             {data: 'telefono', render: function(data, type, row) {
-                    return data + '<button style="margin-left: 2px; border:none; background-color: transparent;" id="invioWhasapp" onclick="sendMessage(event, this)"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></button>';
+                    return data + '<button style="margin-left: 2px; border:none; background-color: transparent;" id="invioWhasapp" onclick="sendMessage(event, this)" data-id="'+ row['id'] +'"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></button>';
                 }
             },
             {data: 'giorni_trascorsi'},
@@ -123,8 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-function sendMessage(e, myTable2){
+function sendMessage(e, button){
 
+    var id = button.getAttribute('data-id');
+    //console.log(button.getAttribute('data-id'));
     var messaggio = document.getElementById('trx');
     // Create a temporary DOM element
     var tempElement = document.createElement('div');
@@ -157,7 +159,7 @@ function sendMessage(e, myTable2){
     messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
 
     inviato.setAttribute('data-cod-cliente', codCliente);
-    inviato.setAttribute('id',id);
+    inviato.setAttribute('data-id', id);
 
     myModal.show();
 
@@ -201,7 +203,7 @@ function insertWhatsapp(btn) {
 
     // Recupera 'id_lavoro' dal bottone
     var idLavoro = btn.getAttribute('data-id');
-    console.log("id: " + idlavoro);
+    console.log("id: " + idLavoro);
 
     // Aggiungi 'cod_cliente' e 'id_lavoro' ai dati da inviare
     if (formData.has('cod_cliente')) {
@@ -230,7 +232,19 @@ function insertWhatsapp(btn) {
 
     // Ricarica la tabella dopo l'inserimento
     var table = $('#dataTable2').DataTable();
-    table.ajax.reload();
+    const ritiratiRadio = document.getElementsByName('ritirati');
+
+    const radioNot = document.getElementById('not');
+
+    console.log(radioNot.checked);
+
+    if(radioNot.checked) {
+        table.ajax.url('app/getWhatsapp.php?display=not').load();
+        table.ajax.reload();
+    }else{
+        table.ajax.url('app/getWhatsapp.php?display=all').load().draw();
+        table.ajax.reload();
+    }
 }
 
 var decodeEntities = (function() {

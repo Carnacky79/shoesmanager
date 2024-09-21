@@ -44,7 +44,7 @@ if (isset($_POST['cod_cliente']) && isset($_POST['id'])) {
     $prepared = $conn->prepare($query);
 
     // Usa il binding per il cliente_id (integer) e id_lavoro (integer)
-    $prepared->bind_param('ii', $cliente_id, $id_lavoro);
+    $prepared->bind_param('dd', $cliente_id, $id_lavoro);
 
     // Esegui la query
     if ($prepared->execute()) {
