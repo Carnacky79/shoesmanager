@@ -137,6 +137,8 @@ function renderAttrTable(data) {
     col3.appendChild(textArea);
     row.appendChild(col3);
 
+
+
     // Creazione della colonna per il bottone
     var col4 = document.createElement("div");
     col4.className = "col-md-2";

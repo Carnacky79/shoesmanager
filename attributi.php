@@ -88,7 +88,7 @@ global $attributi;
                                                 <label for="colore">Colore</label>
                                                 <input type="color" class="form-control" id="colore" name="colore">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="descrizione">Descrizione</label>
                                                 <textarea class="form-control" id="descrizione" name="descrizione"></textarea>
                                             </div>
@@ -110,19 +110,19 @@ global $attributi;
                                         }
 
                                         if($k == 'colore'){
-                                            echo '<div class="col-md-3">';
+                                            echo '<div class="col-md-2">';
                                             //echo '<label for="' . $k . '">' . $k . '</label>';
                                             echo '<input type="color" class="form-control" id="' . $k . '" name="' . $k . '" value="#' . $v . '">';
                                             echo '</div>';
                                             continue;
                                         }
                                         if($k == 'descrizione'){
-                                            echo '<div class="col-md-4">';
+                                            echo '<div class="col-md-2">';
                                             echo '<textarea class="form-control" id="' . $k . '" name="' . $k . '">' . $v . '</textarea>';
                                             echo '</div>';
                                             continue;
                                         }
-                                        echo '<div class="col-md-3">';
+                                        echo '<div class="col-md-2">';
                                         echo '<div class="d-inline-flex align-items-center">';
                                         echo '<label for="' . $k . '">' . $k . '</label>';
                                         echo '<input type="text" class="form-control" id="' . $k . '" name="' . $k . '" value="' . $v . '">';
