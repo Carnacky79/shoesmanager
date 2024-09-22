@@ -11,6 +11,10 @@
     <link href="css/datatable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
+        <?php
+        require_once 'app/db/dbConnection.php';
+            require_once 'css/styleAttr.css.php';
+        ?>
         /* Stile per il messaggio di successo */
         #successMessage {
             display: none;

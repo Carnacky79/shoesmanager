@@ -9,6 +9,7 @@ parse_str($_SERVER['QUERY_STRING'], $queries);
 
 $ended = 0;
 $display = 1;
+$attributi = [];
 
 if(isset($queries['ended'])) {
     $ended = $queries['ended'] == 'true' ? 1 : 0;
@@ -18,8 +19,13 @@ if(isset($queries['display'])) {
     $display = $queries['display'] == 'all' ? 1 : 0;
 }
 
+if(isset($queries['attributi']) && $queries['attributi'] != '') {
+    $attributi = explode(',', $queries['attributi']);
+    //$attributi = $queries['attributi'];
+}
 
-$lavori = getLavori($conn, $ended, $display);
+
+$lavori = getLavori($conn, $ended, $display, $attributi);
 
 /*foreach ($lavori as $key => $lavoro) {
     $lavori[$key]['giorni_trascorsi'] = 0;

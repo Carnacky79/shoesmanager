@@ -72,15 +72,17 @@ window.addEventListener('DOMContentLoaded', event => {
             layout: {
                 topStart: null
             },
-            /*initComplete: function () {
+            initComplete: function () {
                 this.api()
                     .columns()
                     .every(function () {
                         let column = this;
                         let title = column.header().textContent;
                         if(title.toLowerCase() == 'attributi') {
+                            columnSearchCheckboxes(column);
+
                             // Create input element
-                            let input = document.createElement('input');
+                            /*let input = document.createElement('input');
                             input.style.width = '100px';
                             input.placeholder = title.toLowerCase();
 
@@ -92,10 +94,10 @@ window.addEventListener('DOMContentLoaded', event => {
                                 if (column.search() !== this.value) {
                                     column.search(input.value).draw();
                                 }
-                            });
+                            });*/
                         }
                     });
-            },*/
+            },
             pageLength: 200
             //autoWidth: true
         });
@@ -661,6 +663,77 @@ function submitEdit(obj, num=1) {
         };
         xhr.send(formData);
     }
+}
+
+//Funzione per creare la lista di checkbox sull'intestazione, per cercare
+
+function columnSearchCheckboxes(column){
+    var jsonAttribute = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/getAttributi.php', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+
+            jsonAttribute = JSON.parse(xhr.responseText);
+            console.log('response ATTRIBUTI', jsonAttribute);
+
+            var div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.flexWrap = 'wrap';
+            div.setAttribute('id', 'attrSearch');
+            console.log('jsonAttribute', jsonAttribute);
+            jsonAttribute['data'].forEach(function (attr) {
+                var input = document.createElement('input');
+                input.type = 'checkbox';
+                input.name = 'attrSearch';
+                input.value = attr.id;
+                input.id = 'attrSearch_' + attr.id;
+                input.style.margin = '2px';
+                input.style.width = '20px';
+                input.style.height = '20px';
+                input.style.cursor = 'pointer';
+                input.style.float = 'left';
+                input.style.marginLeft = '10px';
+
+                input.addEventListener('change', function(){
+                    var checkboxes = document.querySelectorAll('input[name=attrSearch]:checked');
+                    var values = [];
+                    checkboxes.forEach(function(checkbox){
+                        values.push(checkbox.value);
+                    });
+                    console.log('values', values);
+                    searchFromAttrCheck(values);
+                });
+
+                var label = document.createElement('label');
+                label.htmlFor = 'attrSearch_' + attr.id;
+                label.innerText = attr.attributo;
+                label.style.margin = '2px';
+                label.style.float = 'left';
+                label.style.marginLeft = '10px';
+
+                div.appendChild(input);
+                div.appendChild(label);
+            });
+
+            console.log("attributi replace header");
+            column.header().replaceChildren(div);
+
+        } else {
+            console.log('error', xhr.responseText);
+
+        }
+    };
+    xhr.send();
+
+
+}
+
+function searchFromAttrCheck(values){
+    var table = $('#dataTable1').DataTable();
+    table.ajax.url('app/getLavori.php?attributi='+values).load();
+    table.ajax.reload();
 }
 
 //converte il colore da hex a rgba

@@ -69,7 +69,7 @@
 
     // Gestione Lavori
 
-    function getLavori($conn, $ended = false, $display = 1) {
+    function getLavori($conn, $ended = false, $display = 1, $attributi = []) {
         $sql = 'SELECT l.scaffale, l.id as lid, l.data_inizio, l.data_fine, l.note, l.num_bigliettino, l.ritirato, l.data_ritiro,
 c.cod_cliente, c.telefono, s.titolo, s.id as sid, l.attributo_id, a.id as aid, a.attributo, a.colore FROM lavori AS l
 JOIN clienti AS c on c.id = l.cliente_id JOIN statolavoro AS s ON s.id = l.stato_lavoro_id
@@ -77,6 +77,10 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
 
         if ($display == 0) {
             $sql .= ' AND l.ritirato = 0';
+        }
+
+        if (count($attributi) > 0 && $attributi[0] != '') {
+            $sql .= ' AND l.attributo_id IN (' . implode(',', $attributi) . ')';
         }
 
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
