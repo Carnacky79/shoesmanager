@@ -97,6 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 render: function (data, type, row) {
                     var dataFormatted = new Date(data).toLocaleDateString();
                     var ora = new Date(data).toLocaleTimeString();
+                    if (data == null){
+                        return '';
+                    }
                     return dataFormatted + ' - ' + ora;
                 }
             }
