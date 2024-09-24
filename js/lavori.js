@@ -44,9 +44,9 @@ window.addEventListener('DOMContentLoaded', event => {
                 {data: 'note'},
                 {data: 'data_inizio'},
             ],
-            order: [
+            /*order: [
                 ['8', 'asc'],
-            ],
+            ],*/
             columnDefs: [
                 {target: 1, width: '10px'},
                 {target: 2, width: '10px'},
@@ -756,9 +756,3 @@ function toggleAperti(t){
         table.style.display = 'none';
     }
 }
-
-
-
-
-
-
