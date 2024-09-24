@@ -178,9 +178,59 @@ function addEventToInserisci() {
     });
 }
 
+document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+    // Disabilita il pulsante per evitare clic multipli
+    var button = this;
+    button.disabled = true;
+
+    // Ottieni il form e i suoi dati
+    var form = document.getElementById('formLavoroIns');
+    var formData = new FormData(form);
+
+    // Crea un oggetto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+
+    // Configura la richiesta
+    xhr.open('POST', 'app/inserisciLavoro.php', true);
+
+    // Definisci cosa fare quando la risposta è pronta
+    xhr.onreadystatechange = function () {
+        // Verifica se la richiesta è completata e la risposta è pronta
+        if (xhr.readyState === 4) {
+            // Riabilita il pulsante
+            button.disabled = false;
+
+            // Verifica se la richiesta ha avuto successo
+            if (xhr.status === 200) {
+                // Mostra il messaggio di successo
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+
+                // Fai lampeggiare il messaggio
+                setTimeout(function () {
+                    successMessage.style.display = 'none';
+                    window.location.href = "lavori.php";
+                }, 3000); // Mostra il messaggio per 3 secondi
+
+            } else {
+                // Gestisci l'errore
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+
+    // Invia la richiesta con i dati del form
+    xhr.send(formData);
+
+    // Timeout di 5 secondi prima di poter cliccare di nuovo (opzionale)
+    setTimeout(function() {
+        button.disabled = false;
+    }, 5000); // Cambia il tempo come desideri
+});
 
 
-        document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+
+       /* document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
             // Ottieni il form e i suoi dati
             var form = document.getElementById('formLavoroIns');
             var formData = new FormData(form);
@@ -217,7 +267,7 @@ function addEventToInserisci() {
             // Invia la richiesta con i dati del form
             xhr.send(formData);
 
-        });
+        });*/
 
 document.addEventListener('DOMContentLoaded', function() {
     // Funzione per la chiamata AJAX
