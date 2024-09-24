@@ -179,8 +179,9 @@ function addEventToInserisci() {
 }
 
 document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
-    // Disabilita il pulsante per evitare clic multipli
     var button = this;
+
+    // Disabilita subito il pulsante per evitare clic multipli
     button.disabled = true;
 
     // Ottieni il form e i suoi dati
@@ -195,11 +196,7 @@ document.getElementById('btnInserisciLavoro').addEventListener('click', function
 
     // Definisci cosa fare quando la risposta è pronta
     xhr.onreadystatechange = function () {
-        // Verifica se la richiesta è completata e la risposta è pronta
         if (xhr.readyState === 4) {
-            // Riabilita il pulsante
-            button.disabled = false;
-
             // Verifica se la richiesta ha avuto successo
             if (xhr.status === 200) {
                 // Mostra il messaggio di successo
@@ -222,11 +219,13 @@ document.getElementById('btnInserisciLavoro').addEventListener('click', function
     // Invia la richiesta con i dati del form
     xhr.send(formData);
 
-    // Timeout di 5 secondi prima di poter cliccare di nuovo (opzionale)
+    // Timeout fisso di 5 secondi prima di poter cliccare di nuovo
     setTimeout(function() {
         button.disabled = false;
-    }, 5000); // Cambia il tempo come desideri
+    }, 5000); // Cambia il tempo come desideri (5000ms = 5 secondi)
 });
+
+
 
 
 
