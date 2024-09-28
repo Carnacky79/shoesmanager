@@ -252,10 +252,16 @@ function insertWhatsapp(btn) {
     if(radioNot.checked) {
         table.ajax.url('app/getWhatsapp.php?display=not').load();
         table.ajax.reload();
+        console.log("ricaricato not ");
     }else{
         table.ajax.url('app/getWhatsapp.php?display=all').load().draw();
         table.ajax.reload();
+      console.log("ricaricato all ");
     }
+    table.ajax.reload();
+    window.location.reload(); 
+    console.log("refresh all ");
+    
 }
 
 var decodeEntities = (function() {
@@ -271,9 +277,7 @@ var decodeEntities = (function() {
             str = element.textContent;
             element.textContent = '';
         }
-
         return str;
     }
-
     return decodeHTMLEntities;
 })();

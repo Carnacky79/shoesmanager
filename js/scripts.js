@@ -206,7 +206,8 @@ document.getElementById('btnInserisciLavoro').addEventListener('click', function
                 // Fai lampeggiare il messaggio
                 setTimeout(function () {
                     successMessage.style.display = 'none';
-                    window.location.href = "lavori.php";
+                    /*window.location.href = "lavori.php";*/
+                    window.location.reload(); 
                 }, 3000); // Mostra il messaggio per 3 secondi
 
             } else {
