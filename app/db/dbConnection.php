@@ -24,18 +24,27 @@
 
 function ricercaCliente($conn, $numero, $codice) {
     $sql = 'SELECT * FROM clienti WHERE ';
-    if ($numero) {
+
+    if (!empty($numero)) { // Controllo se $numero non è null, 0 o vuoto
         $param = $numero;
         $sql .= 'telefono = ?';
+        $param_type = 's'; // Supponiamo che il numero di telefono sia una stringa
+
     } else {
         $param = $codice;
         $sql .= 'cod_cliente = ?';
+        $param_type = is_numeric($codice) ? 'i' : 's'; // Verifica se $codice è un numero
     }
+
     $prepared = $conn->prepare($sql);
-    $prepared->bind_param('s', $param);
+
+    // Assicurati che il tipo di parametro sia corretto
+    $prepared->bind_param($param_type, $param);
+
     $prepared->execute();
     $result = $prepared->get_result();
     $prepared->close();
+
     return $result->fetch_assoc();
 }
 
