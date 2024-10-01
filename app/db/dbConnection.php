@@ -3,7 +3,7 @@
 
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    function ricercaCliente($conn, $numero, $codice) {
+    /*function ricercaCliente($conn, $numero, $codice) {
         $sql = 'SELECT * FROM clienti WHERE ';
         if (!is_null($numero)) {
             $param = $numero;
@@ -20,7 +20,24 @@
             $result = $prepared->get_result();
             $prepared->close();
             return $result->fetch_assoc();
+    }*/
+
+function ricercaCliente($conn, $numero, $codice) {
+    $sql = 'SELECT * FROM clienti WHERE ';
+    if ($numero) {
+        $param = $numero;
+        $sql .= 'telefono = ?';
+    } else {
+        $param = $codice;
+        $sql .= 'cod_cliente = ?';
     }
+    $prepared = $conn->prepare($sql);
+    $prepared->bind_param('s', $param);
+    $prepared->execute();
+    $result = $prepared->get_result();
+    $prepared->close();
+    return $result->fetch_assoc();
+}
 
     function getLastCodCliente($conn) {
         $sql = 'SELECT cod_cliente FROM clienti ORDER BY cod_cliente DESC LIMIT 1';
