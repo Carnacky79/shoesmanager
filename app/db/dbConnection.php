@@ -5,15 +5,17 @@
 
     function ricercaCliente($conn, $numero, $codice) {
         $sql = 'SELECT * FROM clienti WHERE ';
-        if ($numero) {
+        if (!is_null($numero)) {
             $param = $numero;
             $sql .= 'telefono = ?';
+            $bind = 's';
         } else {
             $param = $codice;
             $sql .= 'cod_cliente = ?';
+            $bind = 'i';
         }
             $prepared = $conn->prepare($sql);
-            $prepared->bind_param('s', $param);
+            $prepared->bind_param($bind, $param);
             $prepared->execute();
             $result = $prepared->get_result();
             $prepared->close();
@@ -83,6 +85,8 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
             $sql .= ' AND l.attributo_id IN (' . implode(',', $attributi) . ')';
         }
 
+        $sql .= ' ORDER BY l.data_inizio;';
+
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -117,6 +121,10 @@ function getClienteId($conn, $num_cliente) {
             case 7:
                 $toChange = 'note';
                 $bind = 'si';
+                break;
+            case 5:
+                $toChange = 'scaffale';
+                $bind = 'ii';
                 break;
             default:
                 return false;
@@ -257,5 +265,3 @@ function duplicaLavoro($conn, $id_lavoro) {
 function insertWhatsapp(){
 
 }
-
-
