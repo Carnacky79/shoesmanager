@@ -178,6 +178,54 @@ function addEventToInserisci() {
     });
 }
 
+/*document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+    var button = this;
+
+    // Disabilita subito il pulsante per evitare clic multipli
+    button.disabled = true;
+
+    // Ottieni il form e i suoi dati
+    var form = document.getElementById('formLavoroIns');
+    var formData = new FormData(form);
+
+    // Crea un oggetto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+
+    // Configura la richiesta
+    xhr.open('POST', 'app/inserisciLavoro.php', true);
+
+    // Definisci cosa fare quando la risposta è pronta
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            // Verifica se la richiesta ha avuto successo
+            if (xhr.status === 200) {
+                // Mostra il messaggio di successo
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+
+                // Fai lampeggiare il messaggio
+                setTimeout(function () {
+                    successMessage.style.display = 'none';
+                    /*window.location.href = "lavori.php";*//*
+                    window.location.reload(); 
+                }, 3000); // Mostra il messaggio per 3 secondi
+
+            } else {
+                // Gestisci l'errore
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+
+    // Invia la richiesta con i dati del form
+    xhr.send(formData);
+
+    // Timeout fisso di 5 secondi prima di poter cliccare di nuovo
+    setTimeout(function() {
+        button.disabled = false;
+    }, 5000); // Cambia il tempo come desideri (5000ms = 5 secondi)
+});*/
+
 document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
     var button = this;
 
@@ -187,6 +235,14 @@ document.getElementById('btnInserisciLavoro').addEventListener('click', function
     // Ottieni il form e i suoi dati
     var form = document.getElementById('formLavoroIns');
     var formData = new FormData(form);
+
+    // Verifica se il campo numero cliente è vuoto
+    var numCliente = formData.get('numero_cliente'); // Sostituisci 'numero_cliente' con il name corretto del campo
+    if (!numCliente) {
+        alert('Numero cliente mancante. Inserisci un numero cliente valido.');
+        button.disabled = false; // Riabilita subito il pulsante se manca il numero cliente
+        return; // Esce dalla funzione e non invia la richiesta
+    }
 
     // Crea un oggetto XMLHttpRequest
     var xhr = new XMLHttpRequest();
@@ -225,9 +281,6 @@ document.getElementById('btnInserisciLavoro').addEventListener('click', function
         button.disabled = false;
     }, 5000); // Cambia il tempo come desideri (5000ms = 5 secondi)
 });
-
-
-
 
 
        /* document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
