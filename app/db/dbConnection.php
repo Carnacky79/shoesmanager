@@ -213,10 +213,15 @@ function getClienteId($conn, $num_cliente) {
         return date('Y-m-d H:i:s');
     }
 
-    function getLastBiglietto($conn) {
+    /*function getLastBiglietto($conn) {
         $sql = 'SELECT num_bigliettino FROM lavori ORDER BY id DESC LIMIT 1';
         return $conn->query($sql)->fetch_assoc();
-    }
+    }*/
+
+function getLastBiglietto($conn) {
+    $sql = 'SELECT num_bigliettino FROM lavori WHERE data_fine IS NULL ORDER BY data_inizio DESC, num_bigliettino DESC LIMIT 1';
+    return $conn->query($sql)->fetch_assoc();
+}
 
     function getGiorniTrascorsi($data){
         return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
