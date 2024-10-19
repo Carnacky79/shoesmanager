@@ -4,6 +4,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 $menu = [
     'Home' => 'index.php',
     'Gestione Lavori' => 'lavori.php',
+    'Lavori Ritirati' => 'lavoriritirati.php',
     'Whatsapp' => 'whatsapp.php'
 ];
 

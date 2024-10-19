@@ -4,6 +4,10 @@ global $conn;
 
 $arraArgs = $_REQUEST;
 
+$sqlSel = 'SELECT MAX(posizione) as max FROM attributi';
+$posizione = $conn->query($sqlSel)->fetch_assoc();
+$arraArgs['posizione'] = $posizione['max'] + 1;
+
 $sql = 'INSERT INTO attributi (';
 foreach ($arraArgs as $key => $value) {
     if ($key != 'id') {

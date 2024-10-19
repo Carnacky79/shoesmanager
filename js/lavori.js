@@ -42,11 +42,18 @@ window.addEventListener('DOMContentLoaded', event => {
                     return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
                 },
                 {data: 'note'},
-                {data: 'data_inizio'},
+                {data: 'data_inizio',
+                    type: 'datetime', // Forza DataTable a trattare questa colonna come data
+                render: function(data, type, row) {
+                var dataFormatted = new Date(data).toLocaleDateString();
+                        var ora = new Date(data).toLocaleTimeString();
+                        return dataFormatted + ' - ' + ora; // Assicurati che i dati siano formattati come data leggibile
+            }
+                },
             ],
-            order: [
+            /*order: [
                 ['8', 'asc'],
-            ],
+            ],*/
             columnDefs: [
                 {target: 1, width: '10px'},
                 {target: 2, width: '10px'},
@@ -56,7 +63,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
                 {target: 8, width: '250px'},
                 {
-                    targets: 8,
+                   targets: 8,
                     render: function (data, type, row) {
                         var dataFormatted = new Date(data).toLocaleDateString();
                         var ora = new Date(data).toLocaleTimeString();
@@ -222,7 +229,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     var myTable2 = new DataTable(dataTableLavoriT, {
         ajax: {
-            url: 'app/getLavori.php?ended=true&display=all',
+            url: 'app/getLavori.php?ended=true&display=non',
         },
         columns: [
             {data: 'lid',
@@ -247,7 +254,11 @@ window.addEventListener('DOMContentLoaded', event => {
             },
 
             {data: 'note'},
-            {data: 'telefono'},
+            /*{data: 'telefono'},*/
+            {data: 'telefono', render: function(data, type, row) {
+                        return data + '<a style="margin-left: 2px;" href="https://wa.me/39'+data+'" target="_blank"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></a>';
+                    }
+            },
             {data: 'data_ritiro'},
             {data: 'giorni_trascorsi'},
 
@@ -303,6 +314,42 @@ window.addEventListener('DOMContentLoaded', event => {
         /*drawCallback: function() {
             colorizeRows(); // Chiama la funzione di colorazione dopo che la tabella è stata disegnata
         }*/
+    });
+
+    myTable2.on('click', 'tbody td:not(:first-child)', function (e) {
+
+        var cell = myTable2.cell(this);
+        var row = myTable2.row(this);
+        var data = row.data();
+        var col = myTable2.column(this);
+        var colData = col.data();
+        var rowData = row.data();
+        var cellData = cell.data();
+        var cellIndex = cell.index();
+        var rowIndex = row.index();
+        var cellElement = null;
+        if((cellIndex.column == 5) ) {
+            e.preventDefault();
+
+            cellElement = cell.node();
+            cellElement.innerHTML = '<input type="hidden" value="' + data.lid + '" id="id_value"><input type="hidden" value="' + cellIndex.column + '" id="index_column"><input style="width: 80%; z-index:9999" type="text" value="' + cellData + '" autofocus onfocusout="submitEditFalse(this)" /> <button class="customBtn btn btn-outline-dark" onclick="submitEdit(this)">Edit</button>';
+
+            cellElement.querySelector('input[type="text"]').focus();
+            cellElement.querySelector('input[type="text"]').addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+
+
+            console.log('cell', cell);
+            console.log('row', row);
+            console.log('data', data);
+            console.log('col', col);
+            console.log('colData', colData);
+            console.log('rowData', rowData);
+            console.log('cellData', cellData);
+            console.log('cellIndex', cellIndex);
+            console.log('rowIndex', rowIndex);
+        }
     });
 
     ritiratiRadio.forEach(function(radio){
@@ -403,6 +450,14 @@ function addEventToRadio(){
 }
 
 function setRitirato(switc, id){
+    
+     // Funzione per rilevare se il client è offline
+    if (!navigator.onLine) {
+        alert('Nessuna connessione a Internet. Controlla la tua connessione e riprova.');
+        return; // Se non c'è connessione, interrompi l'esecuzione della funzione
+    }
+    
+    
     var formData = new FormData();
     formData.append('id', id);
     formData.append('ritirato', switc.checked);
@@ -411,8 +466,10 @@ function setRitirato(switc, id){
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('response', xhr.responseText);
+            window.location.reload(); // Ricarica la pagina dopo che la richiesta ha avuto successo
         }else{
             console.log('error', xhr.responseText);
+             alert('Ritirato non Set nel Database.');
         }
     };
     xhr.send(formData);
@@ -593,14 +650,20 @@ function submitEditFalse(obj) {
     var cellElement = obj.parentElement;
     var input = null;
     var value = null;
-    if (sib.type == 'text') {
+
+    if(obj.type == "text"){
         input = cellElement.querySelector('input[type="text"]');
         value = input.value;
-        console.log("type tyext", value);
-    } else {
-        input = cellElement.querySelector('textarea');
-        value = input.value;
-        console.log("type textarea", value);
+    }else {
+        if (sib.type == 'text') {
+            input = cellElement.querySelector('input[type="text"]');
+            value = input.value;
+            console.log("type tyext", value);
+        } else {
+            input = cellElement.querySelector('textarea');
+            value = input.value;
+            console.log("type textarea", value);
+        }
     }
     var td = cellElement;
 
@@ -756,9 +819,3 @@ function toggleAperti(t){
         table.style.display = 'none';
     }
 }
-
-
-
-
-
-

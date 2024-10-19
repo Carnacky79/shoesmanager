@@ -72,90 +72,16 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Gestione Lavori</h1>
                 <?php include 'includes/_navbar.php'; ?>
-
                 <div class="row">
                     <div class="col">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Lavori Aperti
-                                <div class="form-check form-switch d-flex flex-row justify-content-between">
-                                     <input onchange="toggleAperti(this)" type="checkbox" role="switch" class="form-check-input" checked="checked" id="aperti_toggle">
-                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
-                                </div>
-                                <!--<div class="form-group mb-4 d-flex justify-content-end" >
-                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
-                                </div>-->
-                            </div>
-                            <div class="card-body" id="lavoriApertiCB">
-                                <table id="dataTable1" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>S.</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>S.</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="labels_1" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
-
-                    <div id="totali" style="width:15%; background-color: rgba(248,209,1,0.25) ; margin-left: 10px">
-
-                    </div>
-                    <div id="attesa" style="width:15%; background-color: rgba(255,114,0,0.25);">
-
-                    </div>
-                    <div id="chiusi" style="width:15%; background-color: rgba(25,255,0,0.50);">
-
-                    </div>
-                    <div id="differenzaac" style="width:15%; background-color: rgba(255,41,41,0.30)">
-
-                    </div>
-                    <div id="ritirati" style="width:15%; background-color: rgba(0,159,147,0.45);">
-
-                    </div>
-                    <div id="differenzacr" style="width:15%; background-color: rgba(133,0,125,0.25); margin-right:10px">
-
-                    </div>
-                </div>
-                <div id="labels_2" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
-
-                </div>
-                <!--<div class="row">
-                    <div class="col">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fa-solid fa-magnifying-glass me-1"></i>
                                 Lavori chiusi -
-                                <input type="radio" class="btn-check" name="ritirati" id="all" autocomplete="off" checked value="all">
+                                <input type="radio" class="btn-check" name="ritirati" id="all" autocomplete="off"  value="all">
                                 <label class="btn btn-outline-success" for="all">Tutti</label>
 
-                                <input type="radio" class="btn-check" name="ritirati" id="nonritirati" autocomplete="off" value="non">
+                                <input type="radio" class="btn-check" name="ritirati" id="nonritirati" autocomplete="off" checked value="non">
                                 <label class="btn btn-outline-danger" for="nonritirati">Non Ritirati</label>
                             </div>
                             <div class="card-body">
@@ -196,7 +122,28 @@
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fa-solid fa-magnifying-glass me-1"></i>
+                                Lavori Aperti
+                                <div class="form-check form-switch d-flex flex-row justify-content-between">
+                                     <input onchange="toggleAperti(this)" type="checkbox" role="switch" class="form-check-input" checked="checked" id="aperti_toggle">
+                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
+                                </div>
+                            </div>
+                            <div class="card-body" id="lavoriApertiCB">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="labels_2" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
+
+                </div>
+              
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">

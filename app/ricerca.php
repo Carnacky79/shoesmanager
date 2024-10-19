@@ -9,7 +9,9 @@ $alias = $_POST['alias'] ?? null;
 $cliente = ricercaCliente($conn, $numero, $codice);
 
 $ResCodCliente = getLastCodCliente($conn);
-$CodCliente = $ResCodCliente['cod_cliente'] + 1;
+if(isset($ResCodCliente['cod_cliente'])) {
+    $CodCliente = $ResCodCliente['cod_cliente'] + 1;
+}
 
 if ($cliente) {
     $HTML = <<<HTML

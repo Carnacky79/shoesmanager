@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 });
 
-function addEventToInserisci() {
+/*function addEventToInserisci() {
     document.getElementById('btnInserisci').addEventListener('click', function () {
         // Ottieni il form e i suoi dati
         var form = document.getElementById('inserisciCliente');
@@ -105,10 +105,185 @@ function addEventToInserisci() {
         // Invia la richiesta con i dati del form
         xhr.send(formData);
     });
+}*/
+
+function addEventToInserisci() {
+    document.getElementById('btnInserisci').addEventListener('click', function () {
+        // Ottieni il form e i suoi dati
+        var form = document.getElementById('inserisciCliente');
+        var formData = new FormData(form);
+
+        // Crea un oggetto XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // Configura la richiesta
+        xhr.open('POST', 'app/inserisci.php', true);
+
+        // Definisci cosa fare quando la risposta è pronta
+        xhr.onreadystatechange = function () {
+            // Verifica se la richiesta è completata e la risposta è pronta
+            if (xhr.readyState === 4) {
+                // Verifica se la richiesta ha avuto successo
+                if (xhr.status === 200) {
+                    // Mostra il messaggio di successo
+                    var successMessage = document.getElementById('successMessage');
+                    successMessage.style.display = 'block';
+
+                    // Fai lampeggiare il messaggio
+                    setTimeout(function () {
+                        successMessage.style.display = 'none';
+                    }, 3000); // Mostra il messaggio per 3 secondi
+
+                    // Popola il div con ID "risultato_ricerca" con il contenuto della risposta
+                    document.getElementById('risultato_ricerca').innerHTML = xhr.responseText;
+                    var cod_cliente = document.getElementById('resCodCliente').innerHTML;
+                    document.getElementById('num_cliente').value = cod_cliente;
+
+                    // Prendi il numero di telefono dall'input (ad esempio da un campo del form)
+                    var telefono = document.getElementById('telefono').innerHTML;
+
+                    // Verifica se il numero di telefono esiste
+                   if (telefono) {
+                        // Formatta il messaggio di benvenuto con il codice cliente
+                        var messaggio = "Benvenuto da Robi il Calzolaio, questo è il suo codice cliente è: " + cod_cliente;
+                        
+                         // Copia il messaggio nella clipboard
+                        navigator.clipboard.writeText(messaggio).then(function() {
+                            console.log('Messaggio copiato nella clipboard: ' + messaggio);
+                        }).catch(function(err) {
+                            console.error('Errore nel copiare il messaggio nella clipboard: ', err);
+                        });
+
+                        // Codifica il messaggio per l'URL di WhatsApp
+                        var messaggioEncoded = encodeURIComponent(messaggio);
+
+                        // Formatta il link per WhatsApp
+                        var whatsappLink = "https://wa.me/39" + telefono + "?text=" + messaggioEncoded;
+                        
+                        // Apri WhatsApp in una nuova finestra o scheda
+                        window.open(whatsappLink, '_blank');
+                    } else {
+                        console.error("Numero di telefono non trovato.");
+                    }
+
+                } else {
+                    // Gestisci l'errore
+                    console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+                }
+            }
+        };
+
+        // Invia la richiesta con i dati del form
+        xhr.send(formData);
+    });
 }
 
+/*document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+    var button = this;
 
-        document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+    // Disabilita subito il pulsante per evitare clic multipli
+    button.disabled = true;
+
+    // Ottieni il form e i suoi dati
+    var form = document.getElementById('formLavoroIns');
+    var formData = new FormData(form);
+
+    // Crea un oggetto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+
+    // Configura la richiesta
+    xhr.open('POST', 'app/inserisciLavoro.php', true);
+
+    // Definisci cosa fare quando la risposta è pronta
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            // Verifica se la richiesta ha avuto successo
+            if (xhr.status === 200) {
+                // Mostra il messaggio di successo
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+
+                // Fai lampeggiare il messaggio
+                setTimeout(function () {
+                    successMessage.style.display = 'none';
+                    /*window.location.href = "lavori.php";*//*
+                    window.location.reload(); 
+                }, 3000); // Mostra il messaggio per 3 secondi
+
+            } else {
+                // Gestisci l'errore
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+
+    // Invia la richiesta con i dati del form
+    xhr.send(formData);
+
+    // Timeout fisso di 5 secondi prima di poter cliccare di nuovo
+    setTimeout(function() {
+        button.disabled = false;
+    }, 5000); // Cambia il tempo come desideri (5000ms = 5 secondi)
+});*/
+
+document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
+    var button = this;
+
+    // Disabilita subito il pulsante per evitare clic multipli
+    button.disabled = true;
+
+    // Ottieni il form e i suoi dati
+    var form = document.getElementById('formLavoroIns');
+    var formData = new FormData(form);
+
+    // Verifica se il campo numero cliente è vuoto
+    var numCliente = formData.get('num_cliente'); // Sostituisci 'numero_cliente' con il name corretto del campo
+    if (!numCliente) {
+        alert('Numero cliente mancante. Inserisci un numero cliente valido.');
+        button.disabled = false; // Riabilita subito il pulsante se manca il numero cliente
+        return; // Esce dalla funzione e non invia la richiesta
+    }
+
+    // Crea un oggetto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+
+    // Configura la richiesta
+    xhr.open('POST', 'app/inserisciLavoro.php', true);
+
+    // Definisci cosa fare quando la risposta è pronta
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            // Verifica se la richiesta ha avuto successo
+            if (xhr.status === 200) {
+                // Mostra il messaggio di successo
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+
+                // Fai lampeggiare il messaggio
+                setTimeout(function () {
+                    successMessage.style.display = 'none';
+                    /*window.location.href = "lavori.php";*/
+                    window.location.reload(); 
+                }, 3000); // Mostra il messaggio per 3 secondi
+
+            } else {
+                // Gestisci l'errore
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+
+    // Invia la richiesta con i dati del form
+    xhr.send(formData);
+
+    // Timeout fisso di 5 secondi prima di poter cliccare di nuovo
+    setTimeout(function() {
+        button.disabled = false;
+    }, 5000); // Cambia il tempo come desideri (5000ms = 5 secondi)
+});
+
+
+       /* document.getElementById('btnInserisciLavoro').addEventListener('click', function () {
             // Ottieni il form e i suoi dati
             var form = document.getElementById('formLavoroIns');
             var formData = new FormData(form);
@@ -145,7 +320,7 @@ function addEventToInserisci() {
             // Invia la richiesta con i dati del form
             xhr.send(formData);
 
-        });
+        });*/
 
 document.addEventListener('DOMContentLoaded', function() {
     // Funzione per la chiamata AJAX

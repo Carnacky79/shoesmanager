@@ -147,7 +147,16 @@ function sendMessage(e, button){
     tempElement.innerHTML = messaggio.value;
 
     // Retrieve the text content from the element
-    var plainText = tempElement.textContent;
+    /*var plainText = tempElement.textContent;*/
+    
+     // Retrieve the text content from the element
+    var plainText = tempElement.innerHTML;
+    
+        plainText = plainText.replace(/<br>/g, '\n')  // Sostituisci i <br> con newline
+                         .replace(/&nbsp;/g, ' ')
+                          .replace(/<div>/g, '')    // Rimuovi <div>
+        .replace(/<\/div>/g, '')  // Rimuovi </div>;
+                         
     //console.log(plainText);
     var data = null;
     data = e.target.closest('tr');
@@ -157,8 +166,40 @@ function sendMessage(e, button){
 
     var number = dataTd[2].innerText;
     var codCliente = dataTd[0].innerText;
-    plainText = plainText.replace('CC:', 'CC: ' + codCliente);
+    
+    // Ottieni la data di inizio e calcola la nuova data aggiungendo 25 giorni
+    /*var dataInizioString = dataTd[6].innerText; // Supponendo che la data di inizio sia nella colonna 7 (indice 6)*/
+    
+    // Ottieni la data di inizio dalla colonna 5 o 6
+    var dataInizioString = dataTd[5].innerText.trim() !== "" ? dataTd[5].innerText : dataTd[6].innerText;
+    
+    console.log("data: " + dataInizioString);
+    
+    // Estrai le parti della data e dell'ora
+var [datePart, timePart] = dataInizioString.split(" - ");
+var [day, month, year] = datePart.split("/");
+var [hours, minutes, seconds] = timePart.split(":");
+
+// Crea l'oggetto Date usando i valori estratti
+var dataInizio = new Date(year, month - 1, day, hours, minutes, seconds);
+/*var dataInizio = new Date(year, month - 1);*/
+
+// Aggiungi 25 giorni
+dataInizio.setDate(dataInizio.getDate() + 25);
+    
+    console.log("data: " + dataInizio);
+
+    // Format the new date (esempio: 14/11/2024)
+    var dataCon25Giorni = dataInizio.toLocaleDateString('it-IT');
+                         
+    
+    
+    plainText = plainText.replace('CC:', 'CC: ' + codCliente)
+                         .replace('Data:', 'Data: ' + dataCon25Giorni);
+                            
+    
     console.log(plainText);
+    
     navigator.clipboard.writeText(plainText);
 
 
@@ -173,9 +214,24 @@ function sendMessage(e, button){
     inviato.setAttribute('data-id', id);
 
     myModal.show();
+    
+   
 
-    var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');
-    var whatsAppURl = 'https://wa.me/39' + number + '?text=' + decodeEntities(messageEncoded);
+    /*var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');*/
+     // Codifica il messaggio
+    //var messageEncoded = encodeURIComponent(plainText);
+    // Sostituisci gli accapo con %0A
+    //messageEncoded = messageEncoded.replace(/%0D/g, '').replace(/%0A/g, '%0A');
+    /*messageEncoded = messageEncoded.replace('%20', '+');*/
+
+    const formattedMessage = encodeURIComponent(plainText)
+        .replace(/%20/g, '+')  // WhatsApp prefers '+' for spaces
+        .replace(/%0A/g, '%0A');
+    
+    
+    
+    //var whatsAppURl = 'https://wa.me/39' + number + '?text=' + decodeEntities(messageEncoded);
+    var whatsAppURl = 'https://wa.me/39' + number + '?text=' + formattedMessage;
     window.open(whatsAppURl, '_blank').focus();
 }
 
@@ -252,10 +308,16 @@ function insertWhatsapp(btn) {
     if(radioNot.checked) {
         table.ajax.url('app/getWhatsapp.php?display=not').load();
         table.ajax.reload();
+        console.log("ricaricato not ");
     }else{
         table.ajax.url('app/getWhatsapp.php?display=all').load().draw();
         table.ajax.reload();
+      console.log("ricaricato all ");
     }
+    table.ajax.reload();
+    window.location.reload(); 
+    console.log("refresh all ");
+    
 }
 
 var decodeEntities = (function() {
@@ -271,9 +333,7 @@ var decodeEntities = (function() {
             str = element.textContent;
             element.textContent = '';
         }
-
         return str;
     }
-
     return decodeHTMLEntities;
 })();

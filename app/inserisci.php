@@ -13,7 +13,7 @@ if ($resInserimento) {
     <div class="cliente">
         <h2>Cliente inserito con successo</h2>
         <p>Codice Cliente: <span id="resCodCliente">{$codice}</span></p>
-        <p>Telefono: {$numero}</p>
+        <p>Telefono: <span id="telefono">{$numero}</span></p>
         <p>Alias: {$alias}</p>
     </div>
 HTML;

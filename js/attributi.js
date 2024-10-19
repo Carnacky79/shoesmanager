@@ -97,7 +97,7 @@ function renderAttrTable(data) {
 
     // Creazione della colonna per l'attributo
     var col1 = document.createElement("div");
-    col1.className = "col-md-3";
+    col1.className = "col-md-2";
     var divInline = document.createElement("div");
     divInline.className = "d-inline-flex align-items-center";
     var label = document.createElement("label");
@@ -116,7 +116,7 @@ function renderAttrTable(data) {
 
     // Creazione della colonna per il colore
     var col2 = document.createElement("div");
-    col2.className = "col-md-3";
+    col2.className = "col-md-2";
     var colorInput = document.createElement("input");
     colorInput.type = "color";
     colorInput.className = "form-control";
@@ -128,7 +128,7 @@ function renderAttrTable(data) {
 
     // Creazione della colonna per la descrizione
     var col3 = document.createElement("div");
-    col3.className = "col-md-4";
+    col3.className = "col-md-2";
     var textArea = document.createElement("textarea");
     textArea.className = "form-control";
     textArea.id = "descrizione";
@@ -137,25 +137,37 @@ function renderAttrTable(data) {
     col3.appendChild(textArea);
     row.appendChild(col3);
 
+    // Colonna per posizione
+    var col4 = document.createElement("div");
+    col4.className = "col-md-2";
+    var posInput = document.createElement("input");
+    posInput.type = "text";
+    posInput.className = "form-control";
+    posInput.id = "posizione";
+    posInput.name = "posizione";
+    posInput.value = data.posizione;
+    col4.appendChild(posInput);
+    row.appendChild(col4);
+
 
 
     // Creazione della colonna per il bottone
-    var col4 = document.createElement("div");
-    col4.className = "col-md-2";
+    var col5 = document.createElement("div");
+    col5.className = "col-md-2";
     var button = document.createElement("button");
     button.className = "btn btn-primary btn-sm";
     button.type = "button";
     button.setAttribute("onclick", "updateAttr(this)");
     button.textContent = "Aggiorna";
-    col4.appendChild(button);
+    col5.appendChild(button);
 
     var deleteButton = document.createElement("button");
     deleteButton.className = "mx-1 btn btn-danger btn-sm";
     deleteButton.type = "button";
     deleteButton.setAttribute("onclick", "deleteAttr(this)");
     deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-        col4.appendChild(deleteButton);
-    row.appendChild(col4);
+        col5.appendChild(deleteButton);
+    row.appendChild(col5);
 
     table.appendChild(row);
 }

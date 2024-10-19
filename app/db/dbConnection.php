@@ -3,22 +3,51 @@
 
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    function ricercaCliente($conn, $numero, $codice) {
+    /*function ricercaCliente($conn, $numero, $codice) {
         $sql = 'SELECT * FROM clienti WHERE ';
-        if ($numero) {
+        if (!is_null($numero)) {
             $param = $numero;
             $sql .= 'telefono = ?';
+            $bind = 's';
         } else {
             $param = $codice;
             $sql .= 'cod_cliente = ?';
+            $bind = 'i';
         }
             $prepared = $conn->prepare($sql);
-            $prepared->bind_param('s', $param);
+            $prepared->bind_param($bind, $param);
             $prepared->execute();
             $result = $prepared->get_result();
             $prepared->close();
             return $result->fetch_assoc();
+    }*/
+
+function ricercaCliente($conn, $numero, $codice) {
+    $sql = 'SELECT * FROM clienti WHERE ';
+
+    if (!empty($numero) && $numero != '0') { // Controllo se $numero non è null, 0 o vuoto
+        $param = $numero;
+        $sql .= 'telefono = ?';
+        $param_type = 's'; // Supponiamo che il numero di telefono sia una stringa
+    } else if(!empty($codice)){
+        $param = $codice;
+        $sql .= 'cod_cliente = ?';
+        $param_type = is_numeric($codice) ? 'i' : 's'; // Verifica se $codice è un numero
+    }else{
+        return null;
     }
+
+    $prepared = $conn->prepare($sql);
+
+    // Assicurati che il tipo di parametro sia corretto
+    $prepared->bind_param($param_type, $param);
+
+    $prepared->execute();
+    $result = $prepared->get_result();
+    $prepared->close();
+
+    return $result->fetch_assoc();
+}
 
     function getLastCodCliente($conn) {
         $sql = 'SELECT cod_cliente FROM clienti ORDER BY cod_cliente DESC LIMIT 1';
@@ -83,6 +112,11 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
             $sql .= ' AND l.attributo_id IN (' . implode(',', $attributi) . ')';
         }
 
+        $sql .= ' ORDER BY l.data_inizio;';
+        
+        // Log la query nel console del browser
+      /*echo "<script>console.log(`" . $sql . "`);</script>";*/
+
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -117,6 +151,10 @@ function getClienteId($conn, $num_cliente) {
             case 7:
                 $toChange = 'note';
                 $bind = 'si';
+                break;
+            case 5:
+                $toChange = 'scaffale';
+                $bind = 'ii';
                 break;
             default:
                 return false;
@@ -188,10 +226,15 @@ function getClienteId($conn, $num_cliente) {
         return date('Y-m-d H:i:s');
     }
 
-    function getLastBiglietto($conn) {
+    /*function getLastBiglietto($conn) {
         $sql = 'SELECT num_bigliettino FROM lavori ORDER BY id DESC LIMIT 1';
         return $conn->query($sql)->fetch_assoc();
-    }
+    }*/
+
+function getLastBiglietto($conn) {
+    $sql = 'SELECT num_bigliettino FROM lavori WHERE data_fine IS NULL ORDER BY data_inizio DESC, num_bigliettino DESC LIMIT 1';
+    return $conn->query($sql)->fetch_assoc();
+}
 
     function getGiorniTrascorsi($data){
         return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
@@ -257,5 +300,3 @@ function duplicaLavoro($conn, $id_lavoro) {
 function insertWhatsapp(){
 
 }
-
-
