@@ -9,7 +9,7 @@ $sql = 'SELECT * FROM statolavoro where id = ?';
 $prepared = $conn->prepare($sql);
 $prepared->bind_param('i', $stato_id);
 $prepared->execute();
-$prepared->bind_result($stato_id, $stato);
+$prepared->bind_result($stato_id, $stato, $colore);
 $prepared->fetch();
 $prepared->close();
 

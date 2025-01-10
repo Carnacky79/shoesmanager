@@ -117,11 +117,20 @@
                     </div>
                     <div class="col-5">
                         <form id="whatsForm">
-
                             <input type="hidden" id="trx" name="whats">
                             <trix-editor input="trx"></trix-editor>
                             <div class="d-grid gap-2 col-6 mx-auto mt-4">
                                 <button id="saveWhats" type="submit" class="btn btn-primary">Salva</button>
+                            </div>
+                        </form>
+                        <!-- Spaziatura tra i form -->
+                        <div class="mt-4"></div>
+                        
+                         <form id="whatsForm2">
+                            <input type="hidden" id="trx2" name="whats2">
+                            <trix-editor input="trx2"></trix-editor>
+                            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                                <button id="saveWhats2" type="submit" class="btn btn-primary">Salva</button>
                             </div>
                         </form>
                     </div>
@@ -153,6 +162,11 @@
                     <p id="corpoModale">Sei sicuro di aver inviato questo messaggio? <br> </p>
                 </div>
                 <div class="modal-footer">
+                    <div style="margin-right: auto;">
+        <!-- Pulsanti a sinistra -->
+        <button type="button" class="btn btn-secondary" id="copiaNumero">Copia numero</button>
+        <button type="button" class="btn btn-secondary" id="copiaMessaggio">Copia messaggio</button>
+    </div>
                     <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
                     <button onclick="insertWhatsapp(this)" type="button" class="btn btn-primary" id="inviato" data-bs-dismiss="modal">Inviato!!!</button>
                 </div>
@@ -170,4 +184,3 @@
 
 </body>
 </html>
-

@@ -14,6 +14,7 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+var telefonocopia;
 
     const dataTableLavoriA = document.getElementById('dataTable1');
         var myTable = new DataTable(dataTableLavoriA, {
@@ -32,36 +33,56 @@ window.addEventListener('DOMContentLoaded', event => {
                         return '<div style="display:flex; flex-wrap: wrap" id="attributo_id_'+ row['lid'] +'"></div>';
                     }
                 },
-                {data: 'telefono', render: function(data, type, row) {
+                /*{data: 'telefono', render: function(data, type, row) {
                         return data + '<a style="margin-left: 2px;" href="https://wa.me/39'+data+'" target="_blank"><i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i></a>';
                     }
-                },
+                },*/
+                {data: 'telefono',name: 'telefono', render: function(data, type, row) {
+    return data + 
+    '<a style="margin-left: 2px;" href="https://wa.me/39'+data+'" target="_blank">' +
+    '<i class="fa-brands fa-square-whatsapp fa-beat-fade fa-lg" style="color: #005239;"></i>' +
+    '</a>' /*+
+    // Aggiungi l'icona di info accanto a WhatsApp
+    '<a href="#" class="update-notes" data-id="' + row['lid'] + '" data-telefono="' + data + '" style="margin-left: 8px;">' +
+    '<i class="fa-solid fa-envelope-circle-check fa-lg" style="color: #000000;"></i>' +
+    '</a>'*/;
+}
+},
                 {data: 'giorni_trascorsi'},
                 {data: 'sid', render: function(data, type, row) {
                         getStati(data, row['lid']);
-                    return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
+                    return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>' +
+                    // Aggiungi l'icona di info accanto a WhatsApp
+    '<a href="#" class="update-notes" data-id="' + row['lid'] + '" data-telefono="' + data + '" style="margin-left: 8px;">' +
+    '<i class="fa-solid fa-envelope-circle-check fa-lg" style="color: #000000;"></i>' +
+    '</a>';}
                 },
                 {data: 'note'},
-                {data: 'data_inizio',
-                    type: 'datetime', // Forza DataTable a trattare questa colonna come data
-                render: function(data, type, row) {
-                var dataFormatted = new Date(data).toLocaleDateString();
-                        var ora = new Date(data).toLocaleTimeString();
-                        return dataFormatted + ' - ' + ora; // Assicurati che i dati siano formattati come data leggibile
+                {
+            data: 'data_inizio',
+            type: 'datetime',
+            render: function(data, type, row) {
+                if (type === 'display' || type === 'filter') {
+                    var dataFormatted = new Date(data).toLocaleDateString();
+                    var ora = new Date(data).toLocaleTimeString();
+                    return dataFormatted + ' - ' + ora;  // Visualizzazione della data formattata
+                }
+                return data;  // Per l'ordinamento, restituisce la data grezza
             }
                 },
             ],
-            /*order: [
+            order: [
                 ['8', 'asc'],
-            ],*/
+            ],
             columnDefs: [
                 {target: 1, width: '10px'},
                 {target: 2, width: '10px'},
-                {target: 3, width: '400px'},
+                {target: 3, width: '300px'},
                 {target: 4, width: '120px'},
                 {target: 5, width: '10px'},
-
-                {target: 8, width: '250px'},
+                {targets: 6, width: '200px'},
+                {targets: 7, width: '500px'},
+                {target: 8, width: '100px'},
                 {
                    targets: 8,
                     render: function (data, type, row) {
@@ -79,32 +100,42 @@ window.addEventListener('DOMContentLoaded', event => {
             layout: {
                 topStart: null
             },
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        let column = this;
-                        let title = column.header().textContent;
-                        if(title.toLowerCase() == 'attributi') {
-                            columnSearchCheckboxes(column);
+           initComplete: function () {
+        this.api()
+            .columns()
+            .every(function () {
+                let column = this;
+                let title = column.header().textContent;
 
-                            // Create input element
-                            /*let input = document.createElement('input');
-                            input.style.width = '100px';
-                            input.placeholder = title.toLowerCase();
-
-                            column.header().replaceChildren(input);
-
-
-                            // Event listener for user input
-                            input.addEventListener('keyup', () => {
-                                if (column.search() !== this.value) {
-                                    column.search(input.value).draw();
-                                }
-                            });*/
+                // Crea input di ricerca solo per le colonne specifiche
+                if (title == 'C.C' || title == 'N.B') {
+                    // Crea l'elemento input
+                    let input = document.createElement('input');
+                    input.style.width = '50px';
+                    input.placeholder = title.toLowerCase();
+                    
+                    // Sostituisci il contenuto dell'header con l'input
+                    column.header().replaceChildren(input);
+                    
+                    // Event listener per l'input dell'utente
+                    input.addEventListener('keyup', () => {
+                        let searchTerm = input.value;
+                        
+                        if (searchTerm) {
+                            // Usa una regex per forzare la ricerca precisa
+                            column.search('^' + searchTerm + '$', true, false).draw(); 
+                        } else {
+                            // Se l'input è vuoto, pulisci la ricerca
+                            column.search('', false, false).draw(); 
                         }
                     });
-            },
+                }
+
+                if(title.toLowerCase() == 'attributi') {
+                    columnSearchCheckboxes(column);
+                }
+            });
+    },
             pageLength: 200
             //autoWidth: true
         });
@@ -143,6 +174,7 @@ window.addEventListener('DOMContentLoaded', event => {
         xhr.open('POST', 'app/duplicaLavoro.php', true);
         xhr.onload = function () {
             if (xhr.status === 200) {
+                alert('Il lavoro è stato duplicato con successo.');
                 console.log('response', xhr.responseText);
             }else{
                 console.log('error', xhr.responseText);
@@ -151,7 +183,7 @@ window.addEventListener('DOMContentLoaded', event => {
         xhr.send(formData);
     }
 
-    myTable.on('dblclick', 'tbody tr textarea', function (e) {
+   /* myTable.on('dblclick', 'tbody tr textarea', function (e) {
 
     e.stopPropagation();
 
@@ -173,7 +205,45 @@ window.addEventListener('DOMContentLoaded', event => {
 
             console.log('lavoroId', lavoroId);
 
-        });
+        });*/
+        
+       myTable.on('dblclick', 'tbody tr td', function (e) {
+    e.stopPropagation();
+
+    // Verifica se il doppio clic è avvenuto sulla cella del telefono
+    let cellIndex = this.cellIndex;
+    let telefonoColumnIndex = myTable.column('telefono:name').index(); // Identifica la colonna del telefono
+    cellIndex = cellIndex + 1;
+    if (cellIndex === telefonoColumnIndex) {
+        let telefono = $(this).text().trim(); // Recupera il numero di telefono dalla cella
+        if (telefono) {
+            // Copia il numero di telefono negli appunti
+            navigator.clipboard.writeText(telefono)
+                .then(() => {
+                    alert('Numero di telefono copiato: ' + telefono);
+                })
+                .catch(err => {
+                    console.error('Errore durante la copia del numero di telefono:', err);
+                });
+        }
+        return;
+    }
+
+    // Comportamento normale per il doppio clic sulla riga
+    var lavoroId = myTable.row($(this).closest('tr')).data().lid; // Ottieni l'ID del lavoro
+    var confirm = window.confirm("Vuoi chiudere il lavoro?");
+    if (!confirm) {
+        return;
+    }
+    var scaffale = prompt("Inserisci lo scaffale", "");
+    if (scaffale === "") {
+        return;
+    }
+    setLavoroEnded(lavoroId, myTable, myTable2, scaffale);
+
+    console.log('lavoroId', lavoroId);
+});
+
 
 
     myTable.on('click', 'tbody td:not(:first-child)', function (e) {
@@ -252,6 +322,10 @@ window.addEventListener('DOMContentLoaded', event => {
                     }
                 }
             },
+              {data: 'sid', render: function(data, type, row) {
+                        getStati(data, row['lid']);
+                    return '<select name="stato_id" id="stato_id_'+ row['lid'] + '"></select>';}
+                },
 
             {data: 'note'},
             /*{data: 'telefono'},*/
@@ -286,30 +360,36 @@ window.addEventListener('DOMContentLoaded', event => {
                 $(row).addClass('bg-arancione');
             }
         },
+        
+        
         initComplete: function () {
-            this.api()
-                .columns()
-                .every(function () {
-                    let column = this;
-                    let title = column.header().textContent;
-                    if(title.toLowerCase() == 'num biglietto' || title.toLowerCase() == 'cod. cliente') {
-                    // Create input element
-                    let input = document.createElement('input');
-                    input.style.width = '50px';
-                    input.placeholder = title.toLowerCase();
+    this.api()
+        .columns()
+        .every(function () {
+            let column = this;
+            let title = column.header().textContent;
+            if (title.toLowerCase() == 'num biglietto' || title.toLowerCase() == 'cod. cliente' || title.toLowerCase() == 'scaffale') {
+                // Create input element
+                let input = document.createElement('input');
+                input.style.width = '50px';
+                input.placeholder = title.toLowerCase();
 
-                        column.header().replaceChildren(input);
+                column.header().replaceChildren(input);
 
+                // Event listener for user input
+                input.addEventListener('keyup', () => {
+                    let searchTerm = input.value;
 
-                    // Event listener for user input
-                    input.addEventListener('keyup', () => {
-                        if (column.search() !== this.value) {
-                            column.search(input.value).draw();
-                        }
-                    });
+                    // Usa una regex per forzare la ricerca precisa
+                    if (searchTerm) {
+                        column.search('^' + searchTerm + '$', true, false).draw(); // true: regex; false: no ricerca fuzzy
+                    } else {
+                        column.search('', false, false).draw(); // Pulisce la ricerca
                     }
                 });
-        },
+            }
+        });
+},
         pageLength: 100
         /*drawCallback: function() {
             colorizeRows(); // Chiama la funzione di colorazione dopo che la tabella è stata disegnata
@@ -569,8 +649,14 @@ function renderStati(stati, stato_id, row_id) {
             option.innerText = stato.titolo;
             if (stato.id == stato_id) {
                 option.selected = 'selected';
+                innerSelect.style.backgroundColor = hexToRgba(stato.colore, 80);
             }
-
+            
+            // Imposta il background-color dell'opzione in base al colore associato allo stato
+            if (stato.colore) {
+                option.style.backgroundColor = hexToRgba(stato.colore, 80);
+            }
+            
             innerSelect.appendChild(option);
 
         });
@@ -605,6 +691,10 @@ function addEventToDropdown(){
 
 }
 
+// ID della barretta di ricerca nella DataTable
+var searchBarId = "dt-search-0"; // ID del campo di ricerca della DataTable
+
+
 function setLavoroEnded(idLavoro, mtable1, mtable2, scaffale) {
     var formData = new FormData();
     formData.append('id', idLavoro);
@@ -614,9 +704,18 @@ function setLavoroEnded(idLavoro, mtable1, mtable2, scaffale) {
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('response', xhr.responseText);
-            mtable1.ajax.reload();
-
-            mtable2.ajax.reload();
+            var searchBar = document.getElementById(searchBarId);
+            searchBar.value = "";
+            // Resetta il filtro di DataTables
+            mtable1.search('').draw();
+            mtable2.search('').draw();
+             // Aggiungi un piccolo ritardo prima di ricaricare le tabelle
+            setTimeout(function() {
+                mtable1.ajax.reload();
+                searchBar.value = "";
+                mtable2.ajax.reload();
+                searchBar.value = "";
+            }, 1000); // 200 millisecondi di ritardo
         }else{
             console.log('error', xhr.responseText);
         }
@@ -740,6 +839,13 @@ function columnSearchCheckboxes(column){
 
             jsonAttribute = JSON.parse(xhr.responseText);
             console.log('response ATTRIBUTI', jsonAttribute);
+            
+            // Rimuovi i figli interni senza rimuovere la colonna stessa
+            var header = column.header();
+            while (header.firstChild) {
+                header.removeChild(header.firstChild);
+            }
+
 
             var div = document.createElement('div');
             div.style.display = 'flex';
@@ -752,6 +858,7 @@ function columnSearchCheckboxes(column){
                 input.name = 'attrSearch';
                 input.value = attr.id;
                 input.id = 'attrSearch_' + attr.id;
+                input.checked = true; // Imposta inizialmente come selezionato
                 input.style.margin = '2px';
                 input.style.width = '20px';
                 input.style.height = '20px';
@@ -781,7 +888,9 @@ function columnSearchCheckboxes(column){
             });
 
             console.log("attributi replace header");
-            column.header().replaceChildren(div);
+            //column.header().replaceChildren(div);
+            header.appendChild(div); // Usa appendChild invece di replaceChildren
+            $('#dataTable1').DataTable().columns.adjust().draw(); // Reinizializza la DataTable
 
         } else {
             console.log('error', xhr.responseText);
@@ -793,10 +902,17 @@ function columnSearchCheckboxes(column){
 
 }
 
-function searchFromAttrCheck(values){
+/*function searchFromAttrCheck(values){
     var table = $('#dataTable1').DataTable();
     table.ajax.url('app/getLavori.php?attributi='+values).load();
     table.ajax.reload();
+}*/
+
+function searchFromAttrCheck(values) {
+    var table = $('#dataTable1').DataTable();
+    table.ajax.url('app/getLavori.php?attributi=' + values).load(function() {
+        table.order([8, 'asc']).draw(false); // Ordina per la prima colonna in ordine ascendente
+    });
 }
 
 //converte il colore da hex a rgba
@@ -819,3 +935,312 @@ function toggleAperti(t){
         table.style.display = 'none';
     }
 }
+
+
+var lastInteractionTime = new Date().getTime(); // Timestamp dell'ultima interazione
+
+// Funzione per resettare il timer di inattività
+function resetIdleTimer() {
+    lastInteractionTime = new Date().getTime(); // Aggiorna il timestamp dell'ultima interazione
+}
+
+// Funzione che forza il focus sulla barretta di ricerca
+function focusOnSearchBarIfIdle() {
+    var currentTime = new Date().getTime(); // Ottieni il timestamp corrente
+    var idleTime = (currentTime - lastInteractionTime) / 1000; // Calcola il tempo di inattività in secondi
+
+    if (idleTime >= 10) { // Controlla se sono passati almeno 10 secondi di inattività
+        var searchBar = document.getElementById(searchBarId);
+
+        // Controlla se l'utente è attualmente nella cella delle note
+        var activeElement = document.activeElement;
+
+        // Verifica se l'elemento attivo è una textarea (per esempio, nelle note)
+        if (activeElement && activeElement.tagName.toLowerCase() === 'textarea') {
+            console.log('Focus bloccato: l\'utente sta editando le note.');
+            return; // Non forzare il focus sulla search bar
+        }
+
+        if (searchBar) {
+            searchBar.focus({ preventScroll: true });
+        }
+    }
+}
+
+// Funzione per aggiornare le etichette I e O
+function updateLabels() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/getLabelCounts.php', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            try {
+                // Parso la risposta JSON
+                var jsonResponse = JSON.parse(xhr.responseText);
+                console.log('Risposta ricevuta:', jsonResponse);
+                
+                // Controllo la presenza di errori
+                if (jsonResponse.error) {
+                    console.error('Errore dal server:', jsonResponse.message);
+                    return;
+                }
+
+                // Seleziono gli elementi HTML da aggiornare
+                var infoI = document.getElementById('infoI');
+                var infoO = document.getElementById('infoO');
+                
+                if (infoI && infoO) {
+                    // Aggiorno il testo delle etichette
+                    infoI.textContent = jsonResponse.I || 0;
+                    infoO.textContent = jsonResponse.O || 0;
+                } else {
+                    console.error('Elementi infoI o infoO non trovati nel DOM.');
+                }
+            } catch (e) {
+                console.error('Errore di parsing JSON:', e);
+                console.error('Risposta ricevuta:', xhr.responseText);
+            }
+        } else {
+            console.error('Errore nella richiesta AJAX. Status:', xhr.status);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('Errore di connessione con getLabelCounts.php');
+    };
+
+    xhr.send();
+}
+
+// Esegui l'aggiornamento delle etichette al caricamento della pagina
+document.addEventListener('DOMContentLoaded', function() {
+    updateLabels(); // Aggiorna subito all'avvio
+    setInterval(updateLabels, 3600000); // Aggiorna ogni ora (3600000 ms = 1 ora)
+});
+
+
+// Rileva attività dell'utente e resetta il timer
+document.addEventListener("mousemove", resetIdleTimer);
+document.addEventListener("keydown", resetIdleTimer);
+document.addEventListener("click", resetIdleTimer);
+document.addEventListener("touchstart", resetIdleTimer);
+
+// Esegui il controllo dell'inattività ogni 10 secondi
+setInterval(focusOnSearchBarIfIdle, 10000); // 10 secondi
+
+// Aggiungi un listener all'icona di info
+/*$(document).on('click', '.update-notes', function(e) {
+    e.preventDefault(); // Evita il comportamento predefinito (se c'è un link)
+    
+    var id = $(this).data('id'); // Ottieni l'ID del lavoro
+    var telefono = $(this).data('telefono'); // Ottieni il numero di telefono
+    var currentDate = new Date().toLocaleDateString(); // Ottieni la data corrente
+
+    // Recupera le note esistenti per quel lavoro
+    $.ajax({
+        url: 'app/getLavori.php',
+        method: 'POST',
+        data: {
+            action: 'get_notes', // L'azione per recuperare le note
+            id: id
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                var existingNotes = response.notes || ""; // Se ci sono note esistenti, altrimenti una stringa vuota
+                var updatedNotes =  "Avvisato il " + currentDate + "\n" + existingNotes; // Aggiungi la data corrente
+
+                // Ora aggiorniamo le note nel database
+                $.ajax({
+                    url: 'app/getLavori.php',
+                    method: 'POST',
+                    data: {
+                        action: 'update_notes', // L'azione per aggiornare
+                        id: id,
+                        notes: updatedNotes // Le nuove note
+                    },
+                    dataType: 'json',
+                    success: function(updateResponse) {
+                        if (updateResponse.success) {
+                            alert("Note aggiornate con successo!");
+                            $('#dataTable1').DataTable().ajax.reload(null, false); // Ricarica la tabella senza saltare la pagina
+                        } else {
+                            console.error("Errore nell'aggiornamento delle note:", updateResponse.error);
+                            alert("Errore durante l'aggiornamento delle note.");
+                        }
+                    },
+                    error: function(err) {
+                        console.error("Errore nella chiamata AJAX per aggiornare le note:", err);
+                        alert("Errore durante l'aggiornamento delle note.");
+                    }
+                });
+            } else {
+                console.error("Errore nel recupero delle note:", response.error);
+                alert("Errore nel recupero delle note.");
+            }
+        },
+        error: function(err) {
+            console.error("Errore nella chiamata AJAX per recuperare le note:", err);
+            alert("Errore nel recupero delle note.");
+        }
+    });
+});*/
+
+$(document).on('click', '.update-notes', function(e) {
+    e.preventDefault(); // Evita il comportamento predefinito
+
+    var id = $(this).data('id'); // Ottieni l'ID del lavoro
+    var currentDate = new Date().toLocaleDateString(); // Ottieni la data corrente
+
+    // Recupera le note esistenti per quel lavoro
+    $.ajax({
+        url: 'app/getLavori.php',
+        method: 'POST',
+        data: {
+            action: 'get_notes', // L'azione per recuperare le note
+            id: id
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                var existingNotes = response.notes || ""; // Note esistenti (vuota se non ci sono)
+
+                // Mostra il popup per le nuove note
+                showNotePopup(existingNotes, function(newNotes) {
+                    if (newNotes.trim() !== "") {
+                        var updatedNotes = newNotes + " " + currentDate + "\n" + existingNotes;
+
+                        // Ora aggiorniamo le note nel database
+                        $.ajax({
+                            url: 'app/getLavori.php',
+                            method: 'POST',
+                            data: {
+                                action: 'update_notes', // L'azione per aggiornare
+                                id: id,
+                                notes: updatedNotes // Le nuove note
+                            },
+                            dataType: 'json',
+                            success: function(updateResponse) {
+                                if (updateResponse.success) {
+                                    alert("Note aggiornate con successo!");
+                                    $('#dataTable1').DataTable().ajax.reload(null, false); // Ricarica la tabella senza saltare la pagina
+                                } else {
+                                    console.error("Errore nell'aggiornamento delle note:", updateResponse.error);
+                                    alert("Errore durante l'aggiornamento delle note.");
+                                }
+                            },
+                            error: function(err) {
+                                console.error("Errore nella chiamata AJAX per aggiornare le note:", err);
+                                alert("Errore durante l'aggiornamento delle note.");
+                            }
+                        });
+                    } else {
+                        alert("Nessuna nuova nota inserita.");
+                    }
+                });
+            } else {
+                console.error("Errore nel recupero delle note:", response.error);
+                alert("Errore nel recupero delle note.");
+            }
+        },
+        error: function(err) {
+            console.error("Errore nella chiamata AJAX per recuperare le note:", err);
+            alert("Errore nel recupero delle note.");
+        }
+    });
+});
+
+// Funzione per mostrare il popup
+function showNotePopup(existingNotes, callback) {
+    // Mostra il popup
+    $('#notePopup').fadeIn();
+    $('#overlay').fadeIn();
+
+    // Inserisce le note esistenti nel campo solo come riferimento (opzionale)
+    $('#noteInput').val("");
+    
+       // Imposta il focus sulla textarea
+    $('#noteInput').focus();
+
+    $('#saveNote').off('click').on('click', function() {
+        var newNotes = $('#noteInput').val();
+        callback(newNotes); // Ritorna le nuove note al callback
+        closeNotePopup();
+    });
+
+    $('#cancelNote').off('click').on('click', function() {
+        closeNotePopup(); // Chiudi il popup senza fare nulla
+    });
+
+    $('#overlay').off('click').on('click', function() {
+        closeNotePopup(); // Chiudi cliccando fuori
+    });
+}
+
+// Funzione per chiudere il popup
+function closeNotePopup() {
+    $('#notePopup').fadeOut();
+    $('#overlay').fadeOut();
+    $('#noteInput').val(""); // Pulisci l'input
+}
+
+
+
+// Funzione per mostrare il tooltip
+function showTooltip(event, content) {
+    // Se il contenuto è vuoto, non mostrare nulla
+    if (!content.trim()) return;
+
+    let tooltip = document.createElement('div');
+    tooltip.className = 'custom-tooltip';
+    tooltip.textContent = content;
+    tooltip.style.position = 'absolute';
+    tooltip.style.background = '#333';
+    tooltip.style.color = '#fff';
+    tooltip.style.padding = '5px 10px';
+    tooltip.style.borderRadius = '5px';
+    tooltip.style.fontSize = '12px';
+    tooltip.style.boxShadow = '0px 2px 6px rgba(0, 0, 0, 0.2)';
+    tooltip.style.whiteSpace = 'pre-wrap';
+    tooltip.style.maxWidth = '300px';
+    tooltip.style.zIndex = '1000';
+    tooltip.style.pointerEvents = 'none';
+
+    // Posizionare il tooltip accanto al mouse
+    tooltip.style.top = (event.pageY + 10) + 'px';
+    tooltip.style.left = (event.pageX + 10) + 'px';
+
+    document.body.appendChild(tooltip);
+
+    // Salva il riferimento al tooltip
+    event.target.tooltip = tooltip;
+}
+
+// Funzione per nascondere il tooltip
+function hideTooltip(event) {
+    if (event.target.tooltip) {
+        document.body.removeChild(event.target.tooltip);
+        event.target.tooltip = null;
+    }
+}
+
+// Aggiungi gli eventi per mostrare/nascondere il tooltip
+document.querySelector('#dataTable1').addEventListener('mouseover', function (event) {
+    // Controlla se siamo nella colonna delle note (settima colonna)
+    let cell = event.target.closest('td');
+    let colIndex = cell ? cell.cellIndex : -1;
+    if (colIndex === 6) { // Indice della colonna delle note (0-based)
+        let content = cell.textContent.trim();
+        showTooltip(event, content);
+    }
+});
+
+document.querySelector('#dataTable1').addEventListener('mousemove', function (event) {
+    if (event.target.tooltip) {
+        event.target.tooltip.style.top = (event.pageY + 10) + 'px';
+        event.target.tooltip.style.left = (event.pageX + 10) + 'px';
+    }
+});
+
+document.querySelector('#dataTable1').addEventListener('mouseout', function (event) {
+    hideTooltip(event);
+});

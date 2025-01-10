@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     xhr.send();
-
+    
+    
+var numero;
+var messaggio2;
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -64,8 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         xhr.send(formData);
     });
-
+    
     const dataTable2 = document.getElementById('dataTable2');
+    var not = 0;
 
     var myTable2 = new DataTable(dataTable2, {
         ajax: {
@@ -104,17 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         ],
-        order: {
-            name: 'data_fine',
+        /*order: {
+            name: 'giorni_trascorsi',
             dir: 'desc'
-        },
+        },*/
+         order: [
+        [4, 'desc'], // Ordina per giorni_trascorsi (colonna 4) decrescente
+        [6, 'asc']   // Poi per data_fine (colonna 6) crescente
+        ],
         deferRender: true,
         createdRow: function (row, data, dataIndex, cells) {
-            if(data['giorni_trascorsi'] > 30) {
+            // Applica il colore solo se l'URL corrisponde
+        if(not==0){
+            if(data['giorni_trascorsi'] > 10) {
                 $(row).addClass('bg-rosso');
-            }else if(data['giorni_trascorsi'] >= 20 && data['giorni_trascorsi'] <= 30) {
+            }else if(data['giorni_trascorsi'] >= 5 && data['giorni_trascorsi'] <= 10) {
                 $(row).addClass('bg-arancione');
             }
+        
+        }
         },
         pageLength: 50
 
@@ -125,16 +137,114 @@ document.addEventListener('DOMContentLoaded', function() {
     ritiratiRadio.forEach(function(radio){
         radio.addEventListener('change', function(){
             if(radio.value == 'not') {
+                not=0;
                 myTable2.ajax.url('app/getWhatsapp.php?display=not').load();
             }else{
+                not=1;
                 myTable2.ajax.url('app/getWhatsapp.php?display=all').load();
             }
         });
     });
 
 });
+//------------------------------------------------------------------------------------------------------------------------------
+function addBusinessDaysExcludingHolidays(startDate, daysToAdd, holidays) {
+    var currentDate = new Date(startDate);
+    var addedDays = 0;
 
-function sendMessage(e, button){
+    // Continuare fino a raggiungere il numero di giorni lavorativi necessari
+    while (addedDays < daysToAdd) {
+        currentDate.setDate(currentDate.getDate() + 1); // Aggiungi un giorno
+
+        // Format della data per confrontare con le date di chiusura
+        var currentDateFormatted = currentDate.toISOString().split('T')[0]; // formato YYYY-MM-DD
+
+        // Se il giorno è una data di chiusura, salta
+        if (holidays.includes(currentDateFormatted)) {
+            continue; // Salta il giorno di chiusura
+        }
+
+        addedDays++; // Contabilizza il giorno se non è chiuso
+    }
+
+    return currentDate;
+}
+
+function loadHolidays() {
+    var holidays = [];
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/note/date.dat', false); // Carica il file in modo sincrono
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Dividi la stringa per virgola e rimuovi eventuali spazi prima e dopo le date
+            holidays = xhr.responseText.split(',').map(date => date.trim());
+        }
+    };
+    xhr.send();
+    return holidays;
+}
+
+function sendMessage(e, button) {
+    var id = button.getAttribute('data-id');
+    var messaggio = document.getElementById('trx');
+    var tempElement = document.createElement('div');
+    tempElement.innerHTML = messaggio.value;
+
+    var plainText = tempElement.innerHTML;
+    plainText = plainText.replace(/<br>/g, '\n')
+                         .replace(/&nbsp;/g, ' ')
+                         .replace(/<div>/g, '')
+                         .replace(/<\/div>/g, '');
+
+    var data = e.target.closest('tr');
+    dataTd = data.getElementsByTagName('td');
+    var number = dataTd[2].innerText;
+    numero = number;
+    var codCliente = dataTd[0].innerText;
+    var dataInizioString = dataTd[5].innerText.trim() !== "" ? dataTd[5].innerText : dataTd[6].innerText;
+
+    var [datePart, timePart] = dataInizioString.split(" - ");
+    var [day, month, year] = datePart.split("/");
+    var [hours, minutes, seconds] = timePart.split(":");
+
+    var dataInizio = new Date(year, month - 1, day, hours, minutes, seconds);
+
+    // Carica le date di chiusura dal file
+    var holidays = loadHolidays();
+
+    // Ora aggiungiamo i giorni escludendo quelli di chiusura
+    dataInizio = addBusinessDaysExcludingHolidays(dataInizio, 20, holidays);
+
+    var dataCon20Giorni = dataInizio.toLocaleDateString('it-IT');
+    plainText = plainText.replace('CC:', 'CC: ' + codCliente)
+                         .replace('Data:', 'Data: ' + dataCon20Giorni);
+
+    navigator.clipboard.writeText(plainText);
+    messaggio2 = plainText;
+    const myModal = new bootstrap.Modal('#staticBackdrop', {});
+    const inviato = myModal._element.querySelector('#inviato');
+    const messaggioModal = myModal._element.querySelector('#corpoModale');
+
+    messaggioModal.innerHTML = '';
+    messaggioModal.innerHTML = messaggioModal.innerHTML + plainText;
+
+    inviato.setAttribute('data-cod-cliente', codCliente);
+    inviato.setAttribute('data-id', id);
+
+    myModal.show();
+
+    const formattedMessage = encodeURIComponent(plainText)
+        .replace(/%20/g, '+') 
+        .replace(/%0A/g, '%0A');
+
+    var whatsAppURl = 'https://wa.me/39' + number + '?text=' + formattedMessage;
+    
+    window.open(whatsAppURl, '_blank').focus();
+}
+
+
+
+/*function sendMessage(e, button){
 
     var id = button.getAttribute('data-id');
     //console.log(button.getAttribute('data-id'));
@@ -147,7 +257,7 @@ function sendMessage(e, button){
     tempElement.innerHTML = messaggio.value;
 
     // Retrieve the text content from the element
-    /*var plainText = tempElement.textContent;*/
+    //var plainText = tempElement.textContent;
     
      // Retrieve the text content from the element
     var plainText = tempElement.innerHTML;
@@ -168,7 +278,7 @@ function sendMessage(e, button){
     var codCliente = dataTd[0].innerText;
     
     // Ottieni la data di inizio e calcola la nuova data aggiungendo 25 giorni
-    /*var dataInizioString = dataTd[6].innerText; // Supponendo che la data di inizio sia nella colonna 7 (indice 6)*/
+    //var dataInizioString = dataTd[6].innerText; // Supponendo che la data di inizio sia nella colonna 7 (indice 6)
     
     // Ottieni la data di inizio dalla colonna 5 o 6
     var dataInizioString = dataTd[5].innerText.trim() !== "" ? dataTd[5].innerText : dataTd[6].innerText;
@@ -182,10 +292,10 @@ var [hours, minutes, seconds] = timePart.split(":");
 
 // Crea l'oggetto Date usando i valori estratti
 var dataInizio = new Date(year, month - 1, day, hours, minutes, seconds);
-/*var dataInizio = new Date(year, month - 1);*/
+//var dataInizio = new Date(year, month - 1);
 
-// Aggiungi 25 giorni
-dataInizio.setDate(dataInizio.getDate() + 25);
+// Aggiungi 20 giorni
+dataInizio.setDate(dataInizio.getDate() + 20);
     
     console.log("data: " + dataInizio);
 
@@ -217,12 +327,12 @@ dataInizio.setDate(dataInizio.getDate() + 25);
     
    
 
-    /*var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');*/
+    //var messageEncoded = encodeURIComponent(plainText).replaceAll('%20', '+');
      // Codifica il messaggio
     //var messageEncoded = encodeURIComponent(plainText);
     // Sostituisci gli accapo con %0A
     //messageEncoded = messageEncoded.replace(/%0D/g, '').replace(/%0A/g, '%0A');
-    /*messageEncoded = messageEncoded.replace('%20', '+');*/
+    //messageEncoded = messageEncoded.replace('%20', '+');
 
     const formattedMessage = encodeURIComponent(plainText)
         .replace(/%20/g, '+')  // WhatsApp prefers '+' for spaces
@@ -233,7 +343,9 @@ dataInizio.setDate(dataInizio.getDate() + 25);
     //var whatsAppURl = 'https://wa.me/39' + number + '?text=' + decodeEntities(messageEncoded);
     var whatsAppURl = 'https://wa.me/39' + number + '?text=' + formattedMessage;
     window.open(whatsAppURl, '_blank').focus();
-}
+}/*
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*function insertWhatsapp(btn){
     var formData = new FormData();
@@ -259,6 +371,30 @@ dataInizio.setDate(dataInizio.getDate() + 25);
     var table = $('#dataTable2').DataTable();
     table.ajax.reload();
 }*/
+
+// Funzione per copiare il numero
+document.getElementById('copiaNumero').addEventListener('click', function () {
+    
+    navigator.clipboard.writeText(numero)
+        .then(() => {
+            alert('Numero copiato negli appunti!');
+        })
+        .catch(err => {
+            console.error('Errore durante la copia del numero:', err);
+        });
+});
+
+// Funzione per copiare il messaggio
+document.getElementById('copiaMessaggio').addEventListener('click', function () {
+   
+    navigator.clipboard.writeText(messaggio2)
+        .then(() => {
+            alert('Messaggio copiato negli appunti!');
+        })
+        .catch(err => {
+            console.error('Errore durante la copia del messaggio:', err);
+        });
+});
 
 function insertWhatsapp(btn) {
     var formData = new FormData();
@@ -337,3 +473,62 @@ var decodeEntities = (function() {
     }
     return decodeHTMLEntities;
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var btnSubmitNote2 = document.getElementById('saveWhats2');
+    var form = document.getElementById('whatsForm2');
+    var note = document.getElementById('trx2');
+    var element = form.querySelector("trix-editor");
+
+    // Carica il contenuto iniziale tramite AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'app/whatsController2.php', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                note.value = xhr.responseText; // Aggiorna il campo nascosto
+                element.editor.setSelectedRange([0, 0]); // Imposta il cursore all'inizio
+                element.editor.insertHTML(note.value); // Inserisce il contenuto nel Trix Editor
+            } else {
+                console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+            }
+        }
+    };
+    xhr.send();
+
+    // Gestione del submit del form
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Previene il comportamento di default del form
+    });
+
+    // Azione sul click del pulsante Salva
+    btnSubmitNote2.addEventListener('click', function() {
+        var formData = new FormData();
+        formData.append('whats2', note.value); // Aggiungi il valore di 'note'
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'app/whatsController2.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+
+                    // Mostra il messaggio di successo
+                    var successMessage = document.getElementById('successMessage');
+                    successMessage.style.display = 'block';
+                    successMessage.innerText = 'Nota salvata con successo';
+                    
+                    // Nasconde il messaggio dopo 3 secondi
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    console.error('Errore durante la richiesta AJAX: ' + xhr.status);
+                }
+            }
+        };
+
+        // Invia i dati del form tramite POST
+        xhr.send(formData);
+    });
+});

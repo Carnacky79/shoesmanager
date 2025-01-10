@@ -64,7 +64,7 @@ global $biglietto;
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Gestione Principale</h1>
+                        <h3 class="mt-4">Gestione Principale</h3>
 <?php include 'includes/_navbar.php'; ?>
 
                         <div class="row">
@@ -125,6 +125,20 @@ global $biglietto;
                                                    value="<?php echo  $biglietto; ?>" />
                                         </div>
                                     </div>
+                                    <div class="row py-2">
+        <!-- Colonna per gli attributi -->
+        <div class="col-md-6">
+            <label for="attributo">Attributo</label>
+            <div style="display: flex; flex-wrap: wrap" id="attributo_id"></div>
+        </div>
+        <!-- Colonna per lo stato del lavoro -->
+        <div class="col-md-6">
+            <label for="stato_lavoro" class="mb-2">Stato Lavoro</label>
+            <select class="form-select" id="stato_lavoro" name="stato_lavoro">
+                
+            </select>
+        </div>
+    </div>
                                     <div class="row">
                                         <!-- <div class="form-group mb-4 col-md-6">
                                              <label for="stato_lavoro" class="mb-2">Stato Lavoro</label>
@@ -138,7 +152,7 @@ global $biglietto;
                                         <div class="form-group mb-4 col">
                                             <label for="note_ordine" class="mb-2">Note</label>
                                             <textarea class="form-control" id="note_ordine" name="note_ordine"
-                                                      placeholder="Inserisci le note relative all'ordine"></textarea>
+                                                      placeholder="Inserisci le note relative all'ordine"style="height: 150px"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">

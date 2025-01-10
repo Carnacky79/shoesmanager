@@ -120,7 +120,7 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
-    function inserisciLavoro($conn, $cliente_id, $num_bigliettino, $stato, $note) {
+   /*function inserisciLavoro($conn, $cliente_id, $num_bigliettino, $stato, $note) {
         $now = getNowDate();
         $sql = 'INSERT INTO lavori (data_inizio, cliente_id, num_bigliettino, stato_lavoro_id, note) VALUES ("'.$now.'", ?, ?, ?, ?)';
         $prepared = $conn->prepare($sql);
@@ -128,7 +128,17 @@ JOIN attributi AS a on a.id = l.attributo_id WHERE l.data_fine IS ' . ($ended ? 
         $status = $prepared->execute();
         $prepared->close();
         return $status;
+    }*/
+     function inserisciLavoro($conn, $cliente_id, $num_bigliettino, $stato,$attributo_id, $note) {
+        $now = getNowDate();
+        $sql = 'INSERT INTO lavori (data_inizio, cliente_id, num_bigliettino, stato_lavoro_id, attributo_id, note) VALUES ("'.$now.'", ?, ?, ?, ?, ?)';
+        $prepared = $conn->prepare($sql);
+        $prepared->bind_param('iiiis', $cliente_id, $num_bigliettino, $stato,$attributo_id, $note);
+        $status = $prepared->execute();
+        $prepared->close();
+        return $status;
     }
+
 
 function getClienteId($conn, $num_cliente) {
         $id = null;
@@ -236,9 +246,48 @@ function getLastBiglietto($conn) {
     return $conn->query($sql)->fetch_assoc();
 }
 
-    function getGiorniTrascorsi($data){
+    /*function getGiorniTrascorsi($data){
         return date_diff(date_create($data), date_create(date('Y-m-d')))->days +1;
+    }*/
+    
+    function getGiorniTrascorsi($data) {
+    // Percorso assoluto o relativo per il file date.dat
+    $filePath = __DIR__ . '/../note/date.dat'; // Se il codice è nella stessa cartella di admin
+
+    // Leggi il file date.dat per ottenere i giorni di chiusura
+    if (!file_exists($filePath)) {
+        return "File non trovato";
     }
+    
+    $giorniChiusura = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $giorniChiusura = array_map('trim', $giorniChiusura); // Pulisci gli spazi
+
+    // Crea l'oggetto DateTime per la data di inizio
+    $dataInizio = date_create($data);
+    // Crea l'oggetto DateTime per la data di oggi
+    $dataFine = date_create(date('Y-m-d'));
+
+    // Calcola la differenza totale in giorni tra la data di inizio e oggi
+    $giorniTotali = date_diff($dataInizio, $dataFine)->days;
+
+    $giorniTrascorsi = 0;
+
+    // Scorrere tutti i giorni dal giorno di inizio fino a oggi
+    for ($i = 0; $i <= $giorniTotali; $i++) {
+        // Calcolare la data corrente aggiungendo $i giorni alla data di inizio
+        $dataCorrente = date_add($dataInizio, date_interval_create_from_date_string("$i days"));
+        $dataCorrenteFormatted = $dataCorrente->format('Y-m-d');  // Formato della data
+
+        // Se la data corrente non è un giorno di chiusura, incrementa il contatore
+        if (!in_array($dataCorrenteFormatted, $giorniChiusura)) {
+            $giorniTrascorsi++;
+        }
+    }
+
+    // Restituire il numero di giorni trascorsi (non un array)
+    return $giorniTrascorsi;
+}
+    
 
 function getWhats($conn, $display = 1) {
         if($display == 1) {

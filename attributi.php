@@ -166,4 +166,3 @@ global $attributi;
 <script src="js/attributi.js"></script>
 </body>
 </html>
-

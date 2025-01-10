@@ -38,7 +38,7 @@
 
     </style>
 </head>
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed sb-sidenav-toggled">
 <div id="successMessage"></div>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-start">
     <!-- Navbar Brand-->
@@ -95,6 +95,7 @@
                                         <th>DATA FINE</th>
                                         <th>SCAFFALE</th>
                                         <th>RITIRATO</th>
+                                        <th>S</th>
                                         <th>NOTE</th>
                                         <th>TELEFONO</th>
                                         <th>DATA RITIRO</th>
@@ -110,6 +111,7 @@
                                         <th>DATA FINE</th>
                                         <th>SCAFFALE</th>
                                         <th>RITIRATO</th>
+                                        <th>S</th>
                                         <th>NOTE</th>
                                         <th>TELEFONO</th>
                                         <th>DATA RITIRO</th>

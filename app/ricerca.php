@@ -19,6 +19,7 @@ if ($cliente) {
         <h2>Cliente Trovato</h2>
         <p>Codice Cliente: <span id="resCodCliente">{$cliente['cod_cliente']}</span></p>
         <p>Telefono: {$cliente['telefono']}</p>
+        <p>Alias: {$cliente['alias']}</p>
     </div>
 HTML;
 

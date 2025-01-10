@@ -38,7 +38,15 @@
 
     </style>
 </head>
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed sb-sidenav-toggled">
+    <div id="notePopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 1px solid #ccc; border-radius: 10px; padding: 20px; z-index: 2000;">
+    <textarea id="noteInput" style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="cancelNote" style="padding: 5px 10px; background: #ccc; border: none; border-radius: 5px; cursor: pointer;">Annulla</button>
+        <button id="saveNote" style="padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Salva</button>
+    </div>
+</div>
+<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1999;"></div>
 <div id="successMessage"></div>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="justify-content: flex-start">
     <!-- Navbar Brand-->
@@ -73,55 +81,63 @@
                 <h1 class="mt-4">Gestione Lavori</h1>
                 <?php include 'includes/_navbar.php'; ?>
 
-                <div class="row">
-                    <div class="col">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fa-solid fa-magnifying-glass me-1"></i>
-                                Lavori Aperti
-                                <div class="form-check form-switch d-flex flex-row justify-content-between">
-                                     <input onchange="toggleAperti(this)" type="checkbox" role="switch" class="form-check-input" checked="checked" id="aperti_toggle">
-                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
-                                </div>
-                                <!--<div class="form-group mb-4 d-flex justify-content-end" >
-                                    <button class="btn btn-primary" type="button" id="btnDuplica">Duplica</button>
-                                </div>-->
-                            </div>
-                            <div class="card-body" id="lavoriApertiCB">
-                                <table id="dataTable1" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>S.</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>C.C</th>
-                                        <th>N.B</th>
-                                        <th>ATTRIBUTI</th>
-                                        <th>CELL</th>
-                                        <th>G.T</th>
-                                        <th>S.</th>
-                                        <th>NOTE</th>
-                                        <th>DATA I.</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+              <div class="row">
+    <div class="col">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <div>
+                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+                    Lavori Aperti
                 </div>
+                <div class="d-flex align-items-center">
+    <!-- Label "I" con il valore dinamico -->
+    <label for="infoI" class="me-2">I:</label>
+    <span id="infoI" class="badge bg-primary me-3">0</span>
+
+    <!-- Label "O" con il valore dinamico -->
+    <label for="infoO" class="me-2">O:</label>
+    <span id="infoO" class="badge bg-success me-3">0</span>
+
+    <!--<input onchange="toggleAperti(this)" type="checkbox" role="switch" class="form-check-input" checked="checked" id="aperti_toggle">-->
+    <button class="btn btn-primary ms-2" type="button" id="btnDuplica">Duplica</button>
+</div>
+            </div>
+            <div class="card-body" id="lavoriApertiCB">
+                <table id="dataTable1" class="display">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>C.C</th>
+                            <th>N.B</th>
+                            <th>ATTRIBUTI</th>
+                            <th>CELL</th>
+                            <th>G.T</th>
+                            <th>S.</th>
+                            <th>NOTE</th>
+                            <th>DATA I.</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>C.C</th>
+                            <th>N.B</th>
+                            <th>ATTRIBUTI</th>
+                            <th>CELL</th>
+                            <th>G.T</th>
+                            <th>S.</th>
+                            <th>NOTE</th>
+                            <th>DATA I.</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+                
                 <div id="labels_1" class="d-flex flex-row flex-nowrap justify-content-between my-5 text-center">
 
                     <div id="totali" style="width:15%; background-color: rgba(248,209,1,0.25) ; margin-left: 10px">

@@ -32,6 +32,7 @@ function updateStato(t) {
 function ajaxStatoUpdate(arrayValues, arrayIds) {
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
+    
     arrayValues.forEach(function (value, index) {
         formData.append(arrayIds[index], value);
     });
@@ -110,8 +111,6 @@ function renderStatiTable(data) {
     col1.appendChild(divInline);
     row.appendChild(col1);
 
-
-
     // Creazione della colonna per il bottone
     var col4 = document.createElement("div");
     col4.className = "col-md-4";
@@ -162,5 +161,3 @@ function deleteStato(t) {
 
     xhr.send(formData);
 }
-
-

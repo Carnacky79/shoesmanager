@@ -50,5 +50,41 @@ foreach ($lavori as $key => $lavoro) {
     }
 }
 
-echo json_encode(['data' => $lavori], JSON_PRETTY_PRINT);
+// Azione per aggiornare le note
+if (isset($_POST['action']) && $_POST['action'] == 'update_notes') {
+    $id = $_POST['id']; // ID del lavoro
+    $notes = $_POST['notes']; // Le nuove note
 
+    $query = "UPDATE lavori SET note = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("si", $notes, $id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Errore nell\'aggiornamento delle note']);
+    }
+    exit;
+}
+
+// Azione per recuperare le note
+if (isset($_POST['action']) && $_POST['action'] == 'get_notes') {
+    $id = $_POST['id']; // ID del lavoro
+
+    $query = "SELECT note FROM lavori WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        echo json_encode(['success' => true, 'notes' => $row['note']]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Lavoro non trovato']);
+    }
+    exit;
+}
+
+
+echo json_encode(['data' => $lavori], JSON_PRETTY_PRINT);

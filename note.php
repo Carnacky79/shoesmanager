@@ -15,6 +15,8 @@ require_once 'app/noteManager.php';
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         /* Stile per il messaggio di successo */
         #successMessage {
@@ -97,6 +99,29 @@ require_once 'app/noteManager.php';
                         </div>
                     </div>
                 </div>
+                <div class="card mt-4">
+    <div class="card-header">
+        <i class="fa-solid fa-calendar-days me-1"></i>
+        Seleziona Intervallo di Date di Chiusura
+    </div>
+    <div class="card-body">
+        <form id="dateForm">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label">Data Inizio</label>
+                    <input type="date" id="startDate" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label">Data Fine</label>
+                    <input type="date" id="endDate" class="form-control" required>
+                </div>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button id="saveDates" type="submit" class="btn btn-success">Salva Date</button>
+            </div>
+        </form>
+    </div>
+</div>
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">
@@ -121,6 +146,6 @@ require_once 'app/noteManager.php';
 <script src='js/autosize/autosize.js'></script>
 <script src="js/note.js"></script>
 
+
 </body>
 </html>
-

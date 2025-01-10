@@ -85,6 +85,10 @@ global $stati;
                                                 <label for="titolo">Titolo</label>
                                                 <input type="text" class="form-control" id="titolo" name="titolo" />
                                             </div>
+                                             <div class="col-md-3">
+                                                <label for="colore">Colore</label>
+                                                <input type="color" class="form-control" id="colore" name="colore">
+                                            </div>
                                             <div class="col-md-2">
                                                 <button class="btn btn-primary btn-sm" type="button" onclick="addStato(this)">Aggiungi</button>
                                             </div>
@@ -105,6 +109,13 @@ global $stati;
                                         if($k == 'titolo'){
                                             echo '<div class="col-md-4">';
                                             echo '<input type="text" class="form-control" id="' . $k . '" name="' . $k . '" value="'.$v.'">';
+                                            echo '</div>';
+                                            continue;
+                                        }
+                                         if($k == 'colore'){
+                                            echo '<div class="col-md-2">';
+                                            //echo '<label for="' . $k . '">' . $k . '</label>';
+                                            echo '<input type="color" class="form-control" id="' . $k . '" name="' . $k . '" value="#' . $v . '">';
                                             echo '</div>';
                                             continue;
                                         }
@@ -152,4 +163,3 @@ global $stati;
 <script src="js/stati.js"></script>
 </body>
 </html>
-
